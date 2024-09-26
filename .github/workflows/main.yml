@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
@@ -38,8 +38,8 @@ jobs:
 
       - uses: nexterias/actions-vercel@v1
         with:
-          token: ${{ secrets.YOUR_VERCEL_TOKEN }}
-          org-id: ${{ secrets.YOUR_VERCEL_ORG_ID }}
-          project-id: ${{ secrets.YOUR_VERCEL_PROJECT_ID }}
+          token: ${{ secrets.VERCEL_TOKEN }}
+          org-id: ${{ secrets.VERCEL_ORG_ID }}
+          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           production: ${{ github.ref == 'refs/heads/main' }}
           prebuilt: true # If set to true, build will be performed using GitHub Actions.
