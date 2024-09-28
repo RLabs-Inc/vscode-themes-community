@@ -1,4 +1,19 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import importMetaUrlPlugin from '@codingame/esbuild-import-meta-url-plugin'
+import { bundlerModuleNameResolver } from 'typescript'
 
-export default nextConfig;
+const nextConfig = {
+  experimental: {
+    turbo: {
+      // resolveAlias: {
+      //   'monaco-editor': 'monaco-editor/esm/vs/editor/editor.api',
+      // },
+
+      resolve: {
+        plugins: [bundlerModuleNameResolver],
+      },
+    },
+  },
+}
+
+export default nextConfig
