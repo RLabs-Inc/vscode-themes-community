@@ -33,7 +33,7 @@ export function generateThemeColors(
     lightness: number
   ) => {
     if (!forceRegenerate) {
-      const randomHueShift = Math.random() * 30 - 15
+      const randomHueShift = Math.random() * 10 - 5
       const randomSaturationShift = Math.random() * 20 - 10
       const randomLightnessShift = Math.random() * 10 - 5
 
@@ -97,14 +97,14 @@ export function generateThemeColors(
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 1.2,
-        isDark ? 60 : 40
+        isDark ? 60 : fgBase + randomInteger(0, 40)
       ),
     AC2:
       initialColors.AC2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 1.1,
-        isDark ? 65 : 45
+        isDark ? 65 : fgBase + randomInteger(0, 50)
       ),
     BORDER:
       initialColors.BORDER ||
@@ -117,13 +117,13 @@ export function generateThemeColors(
       initialColors.INFO || generateColor(210, uiSaturation, isDark ? 65 : 45), // Blue spectrum
     ERROR:
       initialColors.ERROR ||
-      generateColor(0, uiSaturation * 1.2, isDark ? 65 : 45), // Red spectrum
+      generateColor(0, uiSaturation * 1.2, isDark ? 65 : 35), // Red spectrum
     WARNING:
       initialColors.WARNING ||
-      generateColor(30, uiSaturation * 1.1, isDark ? 65 : 45), // Orange spectrum
+      generateColor(30, uiSaturation * 1.1, isDark ? 65 : 35), // Orange spectrum
     SUCCESS:
       initialColors.SUCCESS ||
-      generateColor(120, uiSaturation * 0.9, isDark ? 40 : 35), // Green spectrum
+      generateColor(120, uiSaturation * 0.9, isDark ? 40 : 25), // Green spectrum
     lineHighlight:
       initialColors.lineHighlight ||
       Color(
@@ -182,8 +182,6 @@ export function generateThemeColors(
   if (!few) {
     const ac1AdditionalHues = generateSchemeColors(ac1Hue, scheme)
     const ac2AdditionalHues = generateSchemeColors(ac2Hue, scheme)
-    console.log('AC1 additional hues: ', ac1AdditionalHues)
-    console.log('AC2 additional hues: ', ac2AdditionalHues)
 
     updatedSchemeHues = [
       ...schemeHues,

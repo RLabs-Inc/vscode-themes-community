@@ -69,19 +69,23 @@ const AnsiColorList: React.FC = () => {
     <div className="mb-4">
       <h2 className="text-xl font-semibold mb-2">ANSI Colors</h2>
       <div
-        className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 p-4"
+        className="grid grid-cols-1 gap-4"
         style={{ backgroundColor: colors.BG1 }}
       >
         {colorPairs.map(([color, brightColor]) => (
-          <div key={color} className="flex flex-col gap-2">
-            <ColorBox
-              colorKey={color}
-              colorValue={ansiColors[color as keyof typeof ansiColors]}
-            />
-            <ColorBox
-              colorKey={brightColor}
-              colorValue={ansiColors[brightColor as keyof typeof ansiColors]}
-            />
+          <div key={color} className="flex gap-2">
+            <div className="w-1/2">
+              <ColorBox
+                colorKey={color}
+                colorValue={ansiColors[color as keyof typeof ansiColors]}
+              />
+            </div>
+            <div className="w-1/2">
+              <ColorBox
+                colorKey={brightColor}
+                colorValue={ansiColors[brightColor as keyof typeof ansiColors]}
+              />
+            </div>
           </div>
         ))}
       </div>

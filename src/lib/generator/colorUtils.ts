@@ -48,13 +48,27 @@ export function generateSchemeColors(
     case ColorScheme.GoldenRatio:
       result = [
         baseHue,
-        Math.abs(baseHue + 360 * goldenRatio) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 2) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 5) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 7) % 360,
+      ]
+      break
+    case ColorScheme.GoldenRatio3:
+      result = [
+        baseHue,
+        // Math.abs(baseHue + 360 * goldenRatio) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 2) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 5) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 7) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 8) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 9) % 360,
       ]
       break
     case ColorScheme.Fibonacci:
@@ -68,6 +82,7 @@ export function generateSchemeColors(
         Math.abs(baseHue + 360 / 21) % 360,
         Math.abs(baseHue + 360 / 34) % 360,
         Math.abs(baseHue + 360 / 55) % 360,
+        Math.abs(baseHue + 360 / 89) % 360,
       ]
       break
     case ColorScheme.PentagramStar:
@@ -144,7 +159,8 @@ export function generateSchemeColors(
       ]
       break
     case ColorScheme.FibonacciSequence:
-      const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21]
+      // const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21]
+      const fibSequence = [8, 13, 21, 34]
       result = [
         baseHue,
         ...fibSequence.slice(1).map((n) => Math.abs(baseHue * n) % 360),
@@ -155,7 +171,7 @@ export function generateSchemeColors(
       result = [
         baseHue,
         ...Array.from(
-          { length: 7 },
+          { length: 3 },
           (_, i) => Math.abs(baseHue + (i + 1) * goldenAngle) % 360
         ),
       ]
@@ -224,7 +240,6 @@ export function adjustCommentColor(
   const bgLuminosity = bgColor.luminosity()
   const isDarkTheme = bgColor.isDark()
   const maxSaturation = isDarkTheme ? 15 : 35
-  console.log('Ajusta comentário')
   // Adjust the comment color until it meets our criteria
   while (true) {
     const contrast = comment.contrast(bgColor)
@@ -238,11 +253,9 @@ export function adjustCommentColor(
         if (contrast > maxContrast) {
           comment = comment.darken(0.2)
           comment = comment.desaturate(0.5)
-          // console.log('Escureceu ')
         } else if (contrast < minContrast) {
           comment = comment.lighten(0.2)
           comment = comment.saturate(0.2)
-          // console.log('Clareou ')
         }
       } else {
         break

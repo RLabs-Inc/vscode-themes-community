@@ -12,10 +12,8 @@ export function generateSyntaxColors(
 ): SyntaxColors {
   const baseColor = Color(backgroundColor)
   const isDark = baseColor.isDark()
-  const baseLightness = isDark ? 70 : 40
-  const inverseBaseLightness = isDark ? 20 : 90
-
-  console.log('Syntax Hues: ', schemeHues)
+  const baseLightness = isDark ? 55 : 25
+  const inverseBaseLightness = isDark ? 15 : 85
 
   const generateColor = (
     hueIndex: number,
@@ -141,30 +139,30 @@ export function generateSyntaxColors(
       ),
     punctuation:
       lockedColors.punctuation ||
-      generateColor(punctuationHueIndex, 0.5, randomInteger(10, 20)),
+      generateColor(punctuationHueIndex, 0.4, randomInteger(3, 15)),
     punctuationQuote:
       lockedColors.punctuationQuote ||
       generateColor(
         punctuationHueIndex,
         0.45,
-        randomInteger(13, 21),
+        randomInteger(5, 23),
         randomInteger(9, 17)
       ),
     punctuationBrace:
       lockedColors.punctuationBrace ||
       generateColor(
         punctuationHueIndex,
-        0.55,
-        randomInteger(6, 17),
+        0.4,
+        randomInteger(6, 19),
         randomInteger(13, 21)
       ),
     punctuationComma:
       lockedColors.punctuationComma ||
       generateColor(
         punctuationHueIndex,
-        0.4,
-        randomInteger(0, 10),
-        randomInteger(6, 15)
+        0.45,
+        randomInteger(5, 23),
+        randomInteger(0, 15)
       ),
     selector:
       lockedColors.selector ||
@@ -209,7 +207,7 @@ export function generateSyntaxColors(
       lockedColors.controlImport ||
       generateColor(
         controlHueIndex,
-        1.05,
+        0.75,
         -randomInteger(0, 7),
         randomInteger(9, 17)
       ),
@@ -308,10 +306,10 @@ export function updateSyntaxColorsWithSaturation(
     property: 0.95,
     operator: 0.7,
     storage: 1.05,
-    punctuation: 0.5,
+    punctuation: 0.4,
     punctuationQuote: 0.45,
-    punctuationBrace: 0.55,
-    punctuationComma: 0.4,
+    punctuationBrace: 0.4,
+    punctuationComma: 0.45,
     selector: 1.05,
     modifier: 1,
     other: 1.1,

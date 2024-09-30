@@ -3,7 +3,7 @@ import { ensureReadability } from './colorUtils'
 import type { AnsiColors } from '@/lib/types/colors'
 
 export function generateAnsiColors(backgroundColor: string): AnsiColors {
-  const baseSaturation = 20 + Math.random() * 60 // 20-80
+  const baseSaturation = 20 + Math.random() * 50 // 20-70
   const baseLightness = 30 + Math.random() * 30 // 30-60
 
   const generateColor = (baseHue: number, isGrayscale: boolean = false) => {

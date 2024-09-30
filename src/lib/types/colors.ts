@@ -1,3 +1,6 @@
+import * as monaco from 'monaco-editor'
+import { z } from 'zod'
+
 export type UIColors = {
   BG1: string
   BG2: string
@@ -134,6 +137,7 @@ export enum ColorScheme {
   Triadic,
   Tetradic,
   GoldenRatio,
+  GoldenRatio3,
   Fibonacci,
   PentagramStar,
   VesicaPiscis,
@@ -194,3 +198,96 @@ export type VSCodeTheme = {
     [key: string]: string
   }
 }
+export type IMonacoThemeRule = monaco.editor.ITokenThemeRule[]
+
+export const UIColorsSchema = z.object({
+  BG1: z.string(),
+  BG2: z.string(),
+  BG3: z.string(),
+  FG1: z.string(),
+  FG2: z.string(),
+  FG3: z.string(),
+  AC1: z.string(),
+  AC2: z.string(),
+  BORDER: z.string(),
+  INFO: z.string(),
+  ERROR: z.string(),
+  WARNING: z.string(),
+  SUCCESS: z.string(),
+  lineHighlight: z.string(),
+  selection: z.string(),
+  findMatch: z.string(),
+})
+
+export const SyntaxColorsSchema = z.object({
+  keyword: z.string(),
+  comment: z.string(),
+  function: z.string(),
+  functionCall: z.string(),
+  variable: z.string(),
+  variableDeclaration: z.string(),
+  variableProperty: z.string(),
+  type: z.string(),
+  typeParameter: z.string(),
+  constant: z.string(),
+  class: z.string(),
+  parameter: z.string(),
+  property: z.string(),
+  operator: z.string(),
+  storage: z.string(),
+  other: z.string(),
+  language: z.string(),
+  punctuation: z.string(),
+  punctuationQuote: z.string(),
+  punctuationBrace: z.string(),
+  punctuationComma: z.string(),
+  selector: z.string(),
+  support: z.string(),
+  modifier: z.string(),
+  control: z.string(),
+  controlFlow: z.string(),
+  controlImport: z.string(),
+  tag: z.string(),
+  tagPunctuation: z.string(),
+  attribute: z.string(),
+  unit: z.string(),
+  datetime: z.string(),
+})
+
+export const AnsiColorsSchema = z.object({
+  Black: z.string(),
+  Red: z.string(),
+  Green: z.string(),
+  Yellow: z.string(),
+  Blue: z.string(),
+  Magenta: z.string(),
+  Cyan: z.string(),
+  White: z.string(),
+  BrightBlack: z.string(),
+  BrightRed: z.string(),
+  BrightGreen: z.string(),
+  BrightYellow: z.string(),
+  BrightBlue: z.string(),
+  BrightMagenta: z.string(),
+  BrightCyan: z.string(),
+  BrightWhite: z.string(),
+})
+
+// Update the SavedThemeSchema to match the database schema
+export const SavedThemeSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  userId: z.string(),
+  uiColors: UIColorsSchema,
+  syntaxColors: SyntaxColorsSchema,
+  ansiColors: AnsiColorsSchema,
+  isDark: z.boolean(),
+  baseHue: z.number(),
+  uiSaturation: z.number(),
+  syntaxSaturation: z.number(),
+  scheme: z.union([z.nativeEnum(ColorScheme), z.string()]), // Accept both enum and string
+  createdAt: z.date(),
+  updatedAt: z.date(),
+})
+
+export type SavedTheme = z.infer<typeof SavedThemeSchema>

@@ -57,10 +57,14 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
 
   return (
     <div className="mb-4">
-      <h2 className="text-xl font-semibold mb-5">{title}</h2>
-
+      <div className="flex justify-between">
+        <h2 className="text-xl font-semibold mb-5">{title}</h2>
+        <Button size={'sm'} className="" onClick={handleUnlockAll}>
+          Unlock All
+        </Button>
+      </div>
       <div
-        className="grid grid-cols-4 gap-4"
+        className="grid grid-cols-8 gap-4"
         style={{ background: colors.BG1 }}
       >
         {Object.entries(displayColors).map(([key, value]) => (
@@ -121,11 +125,6 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
             </div>
           </div>
         ))}
-        <div className="self-end w-full place-self-center">
-          <Button className="" size={'sm'} onClick={handleUnlockAll}>
-            Unlock All
-          </Button>
-        </div>
       </div>
     </div>
   )

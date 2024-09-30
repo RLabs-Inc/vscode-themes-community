@@ -20,6 +20,15 @@ import {
   initialSyntaxColors,
   ColorScheme,
 } from '@/lib/types/colors'
+import {
+  saveTheme,
+  getThemeById,
+  getThemesByUserId,
+  deleteTheme,
+  updateTheme as updateThemeInDb,
+} from '@/lib/db/themes'
+import type { SavedTheme } from '@/lib/types/colors'
+import { useTheme as useNextTheme } from 'next-themes'
 
 import type {
   UIColors,
@@ -60,14 +69,25 @@ interface ThemeContextType {
   ansiColors: AnsiColors
   regenerateAnsiColors: () => void
   schemeHues: number[]
+  savedThemes: SavedTheme[]
+  setSavedThemes: (themes: SavedTheme[]) => void
+  saveCurrentTheme: (name: string, userId: string) => Promise<void>
+  loadTheme: (theme: SavedTheme) => void
+  deleteTheme: (themeId: number) => Promise<void>
+  loadSavedThemes: () => Promise<SavedTheme[] | undefined>
+  currentThemeId: number | null
+  setCurrentThemeId: (id: number | null) => void
+  updateCurrentTheme: (name: string) => Promise<void>
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isDark, setIsDarkState] = useState(true)
+export const ThemeProvider: React.FC<{
+  children: React.ReactNode
+  userId?: string // Change this to string to match Clerk's user ID type
+}> = ({ children, userId }) => {
+  const { setTheme, theme } = useNextTheme()
+  const [isDark, setIsDarkState] = useState(theme === 'dark' ? true : false)
   const [baseHue, setBaseHueState] = useState(Math.floor(Math.random() * 360))
   const [uiSaturation, setUiSaturationState] = useState(30)
   const [syntaxSaturation, setSyntaxSaturationState] = useState(70)
@@ -81,8 +101,75 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     generateAnsiColors(initialColors.BG1)
   )
   const [schemeHues, setSchemeHues] = useState<number[]>([])
-
   const generateColorsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [savedThemes, setSavedThemes] = useState<SavedTheme[]>([])
+  const [currentThemeId, setCurrentThemeId] = useState<number | null>(null)
+
+  const loadSavedThemes = useCallback(async () => {
+    if (userId) {
+      const themes = await getThemesByUserId(userId)
+      setSavedThemes(themes)
+      return themes
+    }
+  }, [userId])
+
+  useEffect(() => {
+    const loadUserThemes = async () => {
+      const themes = await loadSavedThemes()
+    }
+    loadUserThemes()
+  }, [userId, loadSavedThemes])
+
+  const saveCurrentTheme = useCallback(
+    async (name: string, userId: string) => {
+      const themeToSave: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'> = {
+        name,
+        userId,
+        uiColors: colors,
+        syntaxColors: syntaxColors,
+        ansiColors: ansiColors,
+        isDark,
+        baseHue,
+        uiSaturation,
+        syntaxSaturation,
+        scheme,
+      }
+      const savedTheme = await saveTheme(themeToSave)
+      setSavedThemes((prev) => [...prev, savedTheme])
+    },
+    [
+      colors,
+      syntaxColors,
+      ansiColors,
+      isDark,
+      baseHue,
+      uiSaturation,
+      syntaxSaturation,
+      scheme,
+    ]
+  )
+
+  const loadTheme = useCallback((theme: SavedTheme) => {
+    setIsDarkState(theme.isDark)
+    setTheme(theme.isDark ? 'dark' : 'light')
+    setColors(theme.uiColors)
+    setSyntaxColors(theme.syntaxColors)
+    setAnsiColors(theme.ansiColors)
+    setBaseHueState(theme.baseHue)
+    setUiSaturationState(theme.uiSaturation)
+    setSyntaxSaturationState(theme.syntaxSaturation)
+    setSchemeState(
+      typeof theme.scheme === 'number'
+        ? theme.scheme
+        : (ColorScheme[theme.scheme as keyof typeof ColorScheme] as ColorScheme)
+    )
+    setCurrentThemeId(theme.id)
+  }, [])
+
+  const deleteThemeFromContext = useCallback(async (themeId: number) => {
+    await deleteTheme(themeId)
+    setSavedThemes((prev) => prev.filter((theme) => theme.id !== themeId))
+  }, [])
 
   const generateColors = useCallback(
     (
@@ -157,15 +244,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const setIsDark = useCallback(
     (value: boolean) => {
       setIsDarkState(value)
+      setTheme(value ? 'dark' : 'light')
       generateColors({ isDark: value })
     },
-    [generateColors]
+    [generateColors, setTheme]
   )
 
   const setBaseHue = useCallback(
     (value: number) => {
       setBaseHueState(value)
-      generateColors({ baseHue: value })
+      generateColors({ baseHue: value, few: true })
     },
     [generateColors]
   )
@@ -215,7 +303,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const setScheme = useCallback(
     (value: ColorScheme) => {
       setSchemeState(value)
-      generateColors({ scheme: value })
+      generateColors({ scheme: value, few: true })
     },
     [generateColors]
   )
@@ -268,6 +356,45 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     regenerateAnsiColors()
   }, [colors.BG1, regenerateAnsiColors])
 
+  const updateCurrentTheme = useCallback(
+    async (name: string) => {
+      if (!currentThemeId || !userId) return
+
+      const themeToUpdate: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'> =
+        {
+          name,
+          userId,
+          uiColors: colors,
+          syntaxColors: syntaxColors,
+          ansiColors: ansiColors,
+          isDark,
+          baseHue,
+          uiSaturation,
+          syntaxSaturation,
+          scheme,
+        }
+
+      const updatedTheme = await updateThemeInDb(currentThemeId, themeToUpdate)
+      setSavedThemes((prev) =>
+        prev.map((theme) =>
+          theme.id === updatedTheme.id ? updatedTheme : theme
+        )
+      )
+    },
+    [
+      currentThemeId,
+      userId,
+      colors,
+      syntaxColors,
+      ansiColors,
+      isDark,
+      baseHue,
+      uiSaturation,
+      syntaxSaturation,
+      scheme,
+    ]
+  )
+
   const value = {
     isDark,
     baseHue,
@@ -279,6 +406,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     ansiColors,
     lockedColors,
     activeColor,
+    savedThemes,
+    setSavedThemes,
+    saveCurrentTheme,
+    loadTheme,
+    loadSavedThemes,
+    deleteTheme: deleteThemeFromContext,
     setIsDark,
     setBaseHue,
     setUiSaturation,
@@ -291,6 +424,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     setActiveColor,
     handleColorChange,
     schemeHues,
+    currentThemeId,
+    setCurrentThemeId,
+    updateCurrentTheme,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
