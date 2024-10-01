@@ -2,6 +2,7 @@ import { randomInteger } from '@/lib/utils/math'
 import { adjustCommentColor, ensureReadability } from './colorUtils'
 import { SyntaxColors } from '@/lib/types/colors'
 import Color from 'color'
+import { Exo_2 } from 'next/font/google'
 
 export function generateSyntaxColors(
   backgroundColor: string,
@@ -23,7 +24,10 @@ export function generateSyntaxColors(
     highContrast: boolean = true
   ) => {
     const hue = (schemeHues[hueIndex % schemeHues.length] + hueShift) % 360
-    const saturation = Math.min(100, syntaxSaturation * saturationMultiplier)
+    const saturation = Math.max(
+      2,
+      Math.min(100, syntaxSaturation * saturationMultiplier)
+    )
     const lightness = Math.min(
       100,
       Math.max(
@@ -281,11 +285,10 @@ export function updateSyntaxColorsWithSaturation(
     saturationMultiplier: number
   ) => {
     const hsl = Color(color).hsl()
-    let newSaturation = Math.min(
-      100,
-      newSyntaxSaturation * saturationMultiplier
+    let newSaturation = Math.max(
+      2,
+      Math.min(100, newSyntaxSaturation * saturationMultiplier)
     )
-    if (newSaturation < 2) newSaturation = 2
     return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
   }
 

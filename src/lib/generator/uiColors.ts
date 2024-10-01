@@ -39,7 +39,7 @@ export function generateThemeColors(
 
       hue = (hue + randomHueShift + 360) % 360
       saturation = Math.max(
-        0,
+        2,
         Math.min(100, saturation + randomSaturationShift)
       )
       lightness = Math.max(0, Math.min(100, lightness + randomLightnessShift))
@@ -203,8 +203,10 @@ export function updateThemeColorsWithSaturation(
     saturationMultiplier: number
   ) => {
     const hsl = Color(color).hsl()
-    let newSaturation = Math.min(100, newUiSaturation * saturationMultiplier)
-    if (newSaturation < 2) newSaturation = 2
+    let newSaturation = Math.max(
+      2,
+      Math.min(100, newUiSaturation * saturationMultiplier)
+    )
     return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
   }
 
