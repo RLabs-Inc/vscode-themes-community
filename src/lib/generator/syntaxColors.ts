@@ -12,7 +12,7 @@ export function generateSyntaxColors(
 ): SyntaxColors {
   const baseColor = Color(backgroundColor)
   const isDark = baseColor.isDark()
-  const baseLightness = isDark ? 55 : 25
+  const baseLightness = isDark ? 80 : 25
   const inverseBaseLightness = isDark ? 15 : 85
 
   const generateColor = (
@@ -281,10 +281,11 @@ export function updateSyntaxColorsWithSaturation(
     saturationMultiplier: number
   ) => {
     const hsl = Color(color).hsl()
-    const newSaturation = Math.min(
+    let newSaturation = Math.min(
       100,
       newSyntaxSaturation * saturationMultiplier
     )
+    if (newSaturation < 2) newSaturation = 2
     return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
   }
 

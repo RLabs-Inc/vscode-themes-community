@@ -474,6 +474,7 @@ const ThemePreview: React.FC = () => {
 
   const getTheme = useCallback((): editor.IStandaloneThemeData => {
     const { themeJSON, themeObject } = generateSemanticThemeJSON(
+      'Generated Color Theme',
       colors,
       syntaxColors,
       ansiColors

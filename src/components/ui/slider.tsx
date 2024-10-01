@@ -22,7 +22,7 @@ const Slider = React.forwardRef<
     {...props}
   >
     <SliderPrimitive.Track
-      className={cn('relative h-1 w-full grow overflow-hidden rounded-full')}
+      className={cn('relative h-2 w-full grow overflow-hidden rounded-full')}
       style={{
         background: bg,
       }}

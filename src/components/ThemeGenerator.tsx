@@ -40,7 +40,7 @@ export const ThemeGenerator = () => {
     <section>
       <div className="mx-auto p-4 flex flex-col gap-5">
         <div className="flex flex-wrap lg:flex-nowrap gap-8">
-          <div className="flex flex-col items-center justify-between w-2/12">
+          <div className="flex flex-col items-center justify-between flex-shrink">
             <div className="flex flex-col items-center flex-1 gap-5">
               <ThemeControls />
               <div className="">
@@ -48,10 +48,10 @@ export const ThemeGenerator = () => {
               </div>
             </div>
           </div>
-          <div className="w-9/12">
+          <div className="flex-1">
             <ThemePreview />
           </div>
-          <div className="flex flex-col gap-5 w-2/12">
+          <div className="flex flex-col gap-5">
             <ColorList title="Theme Colors" isThemeColors={true} />
             <AnsiColorList />
           </div>

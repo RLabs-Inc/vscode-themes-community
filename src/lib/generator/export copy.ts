@@ -8,13 +8,12 @@ import type {
 import Color from 'color'
 
 export function generateSemanticThemeJSON(
-  name: string = 'Generated Color Theme',
   colors: UIColors,
   syntaxColors: SyntaxColors,
   ansiColors: AnsiColors
 ): { themeJSON: string; themeObject: VSCodeTheme } {
   const theme = {
-    name: name,
+    name: 'Generated Color Theme',
     type: Color(colors.BG1).isDark()
       ? ('dark' as 'dark' | 'light')
       : ('light' as 'dark' | 'light'),
@@ -456,7 +455,7 @@ export function generateSemanticThemeJSON(
       'diffEditor.removedTextBorder': colors.ERROR, // Outline color for removed text
       // inlineChat.regionHighlight: *BG2 # Background color for the inline chat diff region
       // "diffEditor.border": colors.SUCCESS, // Border color between the two text editors.
-      'diffEditor.diagonalFill': colors.INFO, // Color of the diff editor's diagonal fill. The diagonal fill is used in side-by-side diff views.
+      'diffEditor.diagonalFill': colors.ERROR, // Color of the diff editor's diagonal fill. The diagonal fill is used in side-by-side diff views.
       'diffEditor.insertedLineBackground': colors.INFO + '40', // Background color for lines that got inserted. The color must not be opaque so as not to hide underlying decorations.
       'diffEditor.removedLineBackground': colors.ERROR + '40', // Background color for lines that got removed. The color must not be opaque so as not to hide underlying decorations.
       'diffEditorGutter.insertedLineBackground': colors.INFO, // Background color for the margin where lines got inserted.
@@ -810,40 +809,21 @@ export function generateSemanticThemeJSON(
       'breadcrumbPicker.background': colors.BG2, // Background color of breadcrumb item picker
     },
     tokenColors: [
-      {
-        scope: ['meta.tag', 'string'],
-        settings: {
-          foreground: colors.FG1,
-        },
-      },
-      {
-        scope: ['meta.diff', 'meta.diff.header'],
-        settings: {
-          foreground: syntaxColors.comment,
-        },
-      },
-      {
-        scope: [
-          'meta.link.reference.def.restructuredtext',
-          'string.other.link.description',
-          'string.other.link.title',
-        ],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
+      // 1. General tokens
       {
         scope: ['emphasis'],
-        settings: {
-          fontStyle: 'italic',
-        },
+        settings: { fontStyle: 'italic' },
       },
       {
         scope: ['strong'],
-        settings: {
-          fontStyle: 'bold',
-        },
+        settings: { fontStyle: 'bold' },
       },
+      {
+        scope: ['header'],
+        settings: { foreground: syntaxColors.constant },
+      },
+
+      // 2. Invalid and deprecated
       {
         scope: ['invalid'],
         settings: {
@@ -858,50 +838,33 @@ export function generateSemanticThemeJSON(
           fontStyle: 'underline italic',
         },
       },
-      {
-        scope: ['header'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
+
+      // 3. Source code
       {
         scope: ['source.ini', 'source.ignore', 'source'],
-        settings: {
-          foreground: colors.FG2,
-        },
+        settings: { foreground: colors.FG2 },
       },
-      //--------------------------------------------------------------------
-      // MARKUP
-      //--------------------------------------------------------------------
+
+      // 4. Markup
       {
         scope: ['markup.inserted'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
+        settings: { foreground: syntaxColors.constant },
       },
       {
         scope: ['markup.deleted'],
-        settings: {
-          foreground: colors.ERROR,
-        },
+        settings: { foreground: colors.ERROR },
       },
       {
         scope: ['markup.changed'],
-        settings: {
-          foreground: colors.INFO,
-        },
+        settings: { foreground: colors.INFO },
       },
       {
         scope: ['markup.error'],
-        settings: {
-          foreground: colors.ERROR,
-        },
+        settings: { foreground: colors.ERROR },
       },
       {
         scope: ['markup.underline'],
-        settings: {
-          fontStyle: 'underline',
-        },
+        settings: { fontStyle: 'underline' },
       },
       {
         scope: ['markup.bold'],
@@ -926,9 +889,7 @@ export function generateSemanticThemeJSON(
       },
       {
         scope: ['markup.inline.raw', 'markup.raw.restructuredtext'],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: [
@@ -936,9 +897,7 @@ export function generateSemanticThemeJSON(
           'markup.underline.link.image',
           'markup.quote',
         ],
-        settings: {
-          foreground: colors.INFO,
-        },
+        settings: { foreground: colors.INFO },
       },
       {
         scope: [
@@ -946,15 +905,11 @@ export function generateSemanticThemeJSON(
           'beginning.punctuation.definition.quote.markdown',
           'punctuation.definition.link.restructuredtext',
         ],
-        settings: {
-          foreground: colors.AC2,
-        },
+        settings: { foreground: colors.AC2 },
       },
       {
         scope: ['meta.separator.markdown'],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: [
@@ -962,28 +917,20 @@ export function generateSemanticThemeJSON(
           'markup.raw.inner.restructuredtext',
           'markup.fenced_code.block.markdown punctuation.definition.markdown',
         ],
-        settings: {
-          foreground: syntaxColors.function,
-        },
+        settings: { foreground: syntaxColors.function },
       },
       {
         scope: [
           'markup.heading.markdown punctuation.definition.string.begin',
           'markup.heading.markdown punctuation.definition.string.end',
         ],
-        settings: {
-          foreground: colors.WARNING,
-        },
+        settings: { foreground: syntaxColors.punctuation },
       },
 
-      //--------------------------------------------------------------------
-      // ENTITIES
-      //--------------------------------------------------------------------
+      // 5. Entities
       {
         scope: ['entity.name.filename'],
-        settings: {
-          foreground: ansiColors.Yellow,
-        },
+        settings: { foreground: ansiColors.Yellow },
       },
       {
         scope: ['entity.name.directive.restructuredtext'],
@@ -1000,29 +947,19 @@ export function generateSemanticThemeJSON(
           'entity.name.fragment.graphql',
           'variable.fragment.graphql',
         ],
-        settings: {
-          foreground: colors.AC2,
-        },
+        settings: { foreground: colors.AC2 },
       },
       {
         scope: ['entity.name.tag'],
-        settings: {
-          foreground: syntaxColors.tag,
-          // fontStyle: "bold",
-        },
+        settings: { foreground: syntaxColors.tag },
       },
       {
         scope: ['entity.other.attribute-name.parent-selector'],
-        settings: {
-          foreground: syntaxColors.tag,
-        },
+        settings: { foreground: syntaxColors.tag },
       },
       {
         scope: ['entity.other.attribute-name', 'meta.object-literal.key.js'],
-        settings: {
-          foreground: colors.AC2,
-          // fontStyle: "bold",
-        },
+        settings: { foreground: colors.AC2 },
       },
       {
         scope: [
@@ -1036,13 +973,10 @@ export function generateSemanticThemeJSON(
           'support.function.any-method.lua',
           'keyword.operator.function.infix',
         ],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: [
-          // "source.css",
           'variable.parameter',
           'entity.name.variable.parameter',
           'meta.selector.css',
@@ -1051,22 +985,7 @@ export function generateSemanticThemeJSON(
           'meta.function.arguments variable.other.php',
           'meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql',
         ],
-        settings: {
-          foreground: syntaxColors.parameter,
-        },
-      },
-      {
-        scope: ['entity.other.attribute-name.class.css'],
-        settings: {
-          foreground: colors.AC1,
-        },
-      },
-      {
-        scope: ['support'],
-        settings: {
-          foreground: syntaxColors.support,
-          // fontStyle: "bold",
-        },
+        settings: { foreground: syntaxColors.parameter },
       },
       {
         scope: [
@@ -1075,15 +994,11 @@ export function generateSemanticThemeJSON(
           'entity.name.tag.yaml',
           'variable.other.key.toml',
         ],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: ['entity.name.type'],
-        settings: {
-          foreground: syntaxColors.type,
-        },
+        settings: { foreground: syntaxColors.type },
       },
       {
         scope: [
@@ -1092,10 +1007,9 @@ export function generateSemanticThemeJSON(
           'meta.indexer.mappedtype.declaration entity.name.type',
           'meta.type.parameters entity.name.type',
         ],
-        settings: {
-          foreground: syntaxColors.typeParameter,
-        },
+        settings: { foreground: syntaxColors.typeParameter },
       },
+      // Entity and CSS
       {
         scope: [
           'entity.other.attribute-name',
@@ -1107,10 +1021,10 @@ export function generateSemanticThemeJSON(
           // fontStyle: "bold",
         },
       },
-
-      //--------------------------------------------------------------------
-      // TYPES
-      //--------------------------------------------------------------------
+      {
+        scope: ['entity.other.attribute-name.class.css'],
+        settings: { foreground: colors.AC1 },
+      },
       {
         scope: [
           'source.css support.type.property-name',
@@ -1124,11 +1038,18 @@ export function generateSemanticThemeJSON(
           foreground: colors.AC2,
         },
       },
-
-      //--------------------------------------------------------------------
-      // STORAGE
-      //--------------------------------------------------------------------
-
+      {
+        scope: ['meta.attribute-selector.scss'],
+        settings: {
+          foreground: syntaxColors.selector,
+        },
+      },
+      // Support
+      {
+        scope: ['support'],
+        settings: { foreground: syntaxColors.support },
+      },
+      // Storage
       {
         scope: [
           'keyword.primitive-datatypes.swift',
@@ -1160,413 +1081,15 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.modifier,
         },
       },
-      {
-        scope: ['punctuation.definition.constant.restructuredtext'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-      {
-        scope: ['storage.type.generic.java'],
-        settings: {
-          foreground: colors.AC1,
-        },
-      },
 
-      //--------------------------------------------------------------------
-      // COMMENTS
-      //--------------------------------------------------------------------
+      // 6. Variables
       {
         scope: [
-          'comment',
-          'punctuation.definition.comment',
-          'unused.comment',
-          'wildcard.comment',
+          'variable',
+          'variable.other.readwrite',
+          'string constant.other.placeholder',
         ],
-        settings: {
-          foreground: syntaxColors.comment,
-        },
-      },
-      {
-        scope: [
-          'comment keyword.codetag.notation',
-          'comment.block.documentation keyword',
-          'comment.block.documentation storage.type.class',
-        ],
-        settings: {
-          foreground: syntaxColors.keyword,
-        },
-      },
-
-      //--------------------------------------------------------------------
-      // CONSTANTS
-      //--------------------------------------------------------------------
-      {
-        scope: ['constant'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-      {
-        scope: ['constant.other.color', 'constant.other.key.perl'],
-        settings: {
-          foreground: syntaxColors.other,
-        },
-      },
-
-      {
-        scope: [
-          'constant.character.escape',
-          'constant.character.string.escape',
-          'constant.regexp',
-          'constant.language',
-        ],
-        settings: {
-          foreground: syntaxColors.language,
-        },
-      },
-      {
-        scope: ['constant.other.date', 'constant.other.timestamp'],
-        settings: {
-          foreground: syntaxColors.datetime,
-        },
-      },
-      {
-        scope: [
-          'constant.language.empty-list.haskell',
-          'constant.other.symbol.hashkey',
-          'constant.other.symbol.hashkey.ruby',
-        ],
-        settings: {
-          foreground: colors.FG2,
-        },
-      },
-
-      //--------------------------------------------------------------------
-      // KEYWORDS
-      //--------------------------------------------------------------------
-      {
-        scope: [
-          'keyword.operator.other.powershell',
-          'keyword.other.statement-separator.powershell',
-        ],
-        settings: {
-          foreground: syntaxColors.operator,
-        },
-      },
-      {
-        scope: [
-          'keyword.operator.dereference.java',
-          'keyword.operator.navigation.groovy',
-        ],
-        settings: {
-          foreground: syntaxColors.operator,
-        },
-      },
-      {
-        scope: ['keyword.operator'],
-        settings: {
-          foreground: syntaxColors.operator,
-        },
-      },
-      {
-        scope: ['keyword.other.unit'],
-        settings: {
-          foreground: syntaxColors.unit,
-        },
-      },
-      {
-        scope: [
-          'keyword.control',
-          'keyword.other.template',
-          'keyword.other.substitution',
-        ],
-        settings: {
-          foreground: syntaxColors.control,
-        },
-      },
-      {
-        scope: ['keyword.expressions-and-types.swift', 'keyword.other.this'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-      {
-        scope: ['keyword.control.import', 'keyword.control.from'],
-        settings: {
-          foreground: syntaxColors.controlImport,
-          //fontStyle: "bold"
-        },
-      },
-      {
-        scope: [
-          'keyword.control.new',
-          'keyword.operator.new',
-          'keyword.other.important.css',
-        ],
-        settings: {
-          foreground: colors.AC2,
-          // fontStyle: "bold"
-        },
-      },
-
-      {
-        scope: ['meta.attribute-selector.scss'],
-        settings: {
-          foreground: syntaxColors.selector,
-        },
-      },
-      {
-        scope: [
-          'keyword.control.flow',
-          'keyword.control.loop',
-          'keyword.control.conditional',
-          'keyword.operator.logical',
-          'keyword.operator.relational',
-          'keyword.operator.comparison',
-          'keyword.operator.ternary',
-        ],
-        settings: {
-          foreground: syntaxColors.controlFlow,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        name: 'Tag names in Stylesheets',
-        scope: [
-          'entity.name.tag.css',
-          'entity.name.tag.less',
-          'entity.name.tag.custom.css',
-        ],
-        settings: {
-          foreground: syntaxColors.tag,
-          fontStyle: '',
-        },
-      },
-      {
-        name: 'Wildcard(*) selector in Stylesheets',
-        scope: [
-          'entity.name.tag.wildcard.css',
-          'entity.name.tag.wildcard.less',
-          'entity.name.tag.wildcard.scss',
-          'entity.name.tag.wildcard.sass',
-        ],
-        settings: {
-          foreground: syntaxColors.tagPunctuation,
-        },
-      },
-      {
-        name: 'Constant property values in Stylesheets',
-        scope: ['support.constant.property-value.css', 'constant.numeric.css'],
-        settings: {
-          foreground: colors.FG2,
-          fontStyle: '',
-        },
-      },
-      {
-        scope: ['keyword.control.at-rule.apply.tailwind'],
-        settings: {
-          foreground: syntaxColors.controlImport,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        scope: ['keyword.control.at-rule.tailwind.tailwind'],
-        settings: {
-          foreground: syntaxColors.control,
-        },
-      },
-      {
-        scope: ['keyword.control.at-rule.layer.tailwind'],
-        settings: {
-          foreground: syntaxColors.controlFlow,
-        },
-      },
-      {
-        scope: ['meta.selector'],
-        settings: {
-          foreground: syntaxColors.selector,
-        },
-      },
-      {
-        scope: [
-          'keyword.primitive-datatypes.swift',
-          'keyword.type.cs',
-          'meta.protocol-list.objc',
-          'meta.return-type.objc',
-          'source.powershell entity.other.attribute-name',
-        ],
-        settings: {
-          foreground: syntaxColors.attribute,
-        },
-      },
-
-      //--------------------------------------------------------------------
-      // PONCTUATION
-      //--------------------------------------------------------------------
-      {
-        scope: [
-          'punctuation.definition.string.begin',
-          'punctuation.definition.string.end',
-          'punctuation.support.type.property-name.begin',
-          'punctuation.support.type.property-name.end',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuation,
-        },
-      },
-      {
-        scope: [
-          'string.quoted.docstring.multi',
-          'string.quoted.docstring.multi.python punctuation.definition.string.begin',
-          'string.quoted.docstring.multi.python punctuation.definition.string.end',
-          'string.quoted.docstring.multi.python constant.character.escape',
-        ],
-        settings: {
-          foreground: colors.AC1,
-        },
-      },
-      {
-        scope: [
-          'punctuation.definition.keyword.css',
-          'punctuation.section.property-list.begin.bracket.curly.css',
-          'punctuation.section.property-list.end.bracket.curly.css',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuation,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        scope: [
-          'punctuation.definition.attribute-selector.end.bracket.square.scss',
-          'punctuation.definition.attribute-selector.begin.bracket.square.scss',
-        ],
-        settings: {
-          foreground: colors.FG2,
-        },
-      },
-      {
-        scope: [
-          'punctuation',
-          'punctuation.definition.tag',
-          'punctuation.separator.inheritance.php',
-          'punctuation.definition.tag.html',
-          'punctuation.definition.tag.begin.html',
-          'punctuation.definition.tag.end.html',
-          'punctuation.section.embedded',
-        ],
-        settings: {
-          foreground: syntaxColors.tagPunctuation,
-        },
-      },
-      {
-        scope: [
-          'punctuation.definition.constant.ruby',
-          'entity.other.attribute-name.placeholder punctuation',
-          'entity.other.attribute-name.pseudo-class punctuation',
-          'entity.other.attribute-name.pseudo-element punctuation',
-          'meta.group.double.toml',
-          'meta.brace.square',
-          'meta.group.toml',
-          'meta.object-binding-pattern-variable punctuation.destructuring',
-          'punctuation.colon.graphql',
-          'punctuation.definition.block.scalar.folded.yaml',
-          'punctuation.definition.block.scalar.literal.yaml',
-          'punctuation.definition.block.sequence.item.yaml',
-          'punctuation.definition.entity.other.inherited-class',
-          'punctuation.function.swift',
-          'punctuation.separator.dictionary.key-value',
-          'punctuation.separator.hash',
-          'punctuation.separator.inheritance',
-          'punctuation.separator.key-value',
-          'punctuation.separator.key-value.mapping.yaml',
-          'punctuation.separator.namespace',
-          'punctuation.separator.pointer-access',
-          'punctuation.separator.slice',
-          'string.unquoted.heredoc punctuation.definition.string',
-          'support.other.chomping-indicator.yaml',
-          'punctuation.separator.annotation',
-        ],
-        settings: {
-          foreground: ansiColors.White,
-        },
-      },
-      {
-        scope: [
-          'meta.brace.round',
-          'meta.function-call punctuation',
-          'punctuation.definition.arguments.begin',
-          'punctuation.definition.arguments.end',
-          'punctuation.definition.entity.begin',
-          'punctuation.definition.entity.end',
-          'punctuation.definition.tag.cs',
-          'punctuation.definition.type.begin',
-          'punctuation.definition.type.end',
-          'punctuation.section.scope.begin',
-          'punctuation.section.scope.end',
-          'string.template meta.brace',
-          'string.template punctuation.accessor',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuationBrace,
-        },
-      },
-      {
-        scope: [
-          'meta.string-contents.quoted.double punctuation.definition.variable',
-          'punctuation.definition.interpolation.begin',
-          'punctuation.definition.interpolation.end',
-          'punctuation.definition.template-expression.begin',
-          'punctuation.definition.template-expression.end',
-          'punctuation.section.embedded.begin',
-          'punctuation.section.embedded.coffee',
-          'punctuation.section.embedded.end',
-          'punctuation.section.embedded.end source.php',
-          'punctuation.section.embedded.end source.ruby',
-          'punctuation.definition.variable.makefile',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuationQuote,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        scope: [
-          'meta.scope.for-loop.shell punctuation.definition.string.begin',
-          'meta.scope.for-loop.shell punctuation.definition.string.end',
-          'meta.scope.for-loop.shell string',
-          'punctuation.section.embedded.begin.tsx',
-          'punctuation.section.embedded.end.tsx',
-          'punctuation.section.embedded.begin.jsx',
-          'punctuation.section.embedded.end.jsx',
-          'punctuation.separator.list.comma.css',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuationComma,
-        },
-      },
-      {
-        scope: ['punctuation.definition.directive.restructuredtext'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-      {
-        scope: ['punctuation.separator.inheritance.php'],
-        settings: {
-          foreground: syntaxColors.punctuation,
-        },
-      },
-
-      //--------------------------------------------------------------------
-      // VARIABLES
-      //--------------------------------------------------------------------
-      {
-        scope: ['variable', 'variable.other.readwrite'],
-        settings: {
-          foreground: syntaxColors.variable,
-        },
+        settings: { foreground: colors.FG1 },
       },
       {
         scope: ['variable.other.alias.yaml'],
@@ -1640,52 +1163,347 @@ export function generateSemanticThemeJSON(
         },
       },
 
-      //--------------------------------------------------------------------
-      // FUNCTIONS
-      //--------------------------------------------------------------------
+      // 7. Strings
+      {
+        scope: ['string', 'string punctuation.section.embedded source'],
+        settings: { foreground: colors.FG2 },
+      },
       {
         scope: [
-          'support.function.magic',
-          'variable.other.predefined',
-          'storage.modifier.async',
-          'keyword.control.trycatch',
-          'keyword.control.trycatch.js',
-          'keyword.control.trycatch.ts',
+          'punctuation.definition.string',
+          'punctuation.support.type.property-name.begin',
+          'punctuation.support.type.property-name.end',
         ],
+        settings: { foreground: syntaxColors.punctuationQuote },
+      },
+
+      // 8. Numbers
+      {
+        scope: [
+          'constant.numeric',
+          'constant.character.numeric',
+          'constant.numeric.integer',
+          'constant.numeric.float',
+          'constant.numeric.hex',
+          'constant.numeric.octal',
+        ],
+        settings: { foreground: syntaxColors.number },
+      },
+
+      // 9. Comments
+      {
+        scope: [
+          'comment',
+          'punctuation.definition.comment',
+          'unused.comment',
+          'wildcard.comment',
+        ],
+        settings: { foreground: syntaxColors.comment },
+      },
+      {
+        scope: [
+          'comment keyword.codetag.notation',
+          'comment.block.documentation keyword',
+          'comment.block.documentation storage.type.class',
+        ],
+        settings: { foreground: syntaxColors.keyword },
+      },
+
+      // 10. Constants
+      {
+        scope: ['constant'],
+        settings: { foreground: syntaxColors.constant },
+      },
+      {
+        scope: ['constant.other.color', 'constant.other.key.perl'],
+        settings: { foreground: syntaxColors.other },
+      },
+      {
+        scope: [
+          'constant.character.escape',
+          'constant.character.string.escape',
+          'constant.regexp',
+          'constant.language',
+        ],
+        settings: { foreground: syntaxColors.language },
+      },
+      {
+        scope: ['constant.other.date', 'constant.other.timestamp'],
+        settings: { foreground: syntaxColors.datetime },
+      },
+      {
+        scope: [
+          'constant.language.empty-list.haskell',
+          'constant.other.symbol.hashkey',
+          'constant.other.symbol.hashkey.ruby',
+        ],
+        settings: { foreground: colors.FG2 },
+      },
+
+      // 11. Keywords
+      {
+        scope: ['keyword.operator'],
         settings: {
-          foreground: colors.WARNING,
+          foreground: syntaxColors.operator,
         },
       },
       {
-        scope: ['support.function', 'support.type.property-name'],
+        scope: ['keyword.other.unit'],
         settings: {
-          foreground: syntaxColors.functionCall,
+          foreground: syntaxColors.unit,
+        },
+      },
+      {
+        scope: [
+          'keyword.control',
+          'keyword.other.template',
+          'keyword.other.substitution',
+        ],
+        settings: {
+          foreground: syntaxColors.control,
+        },
+      },
+      {
+        scope: ['keyword.expressions-and-types.swift', 'keyword.other.this'],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ['keyword.control.import', 'keyword.control.from'],
+        settings: {
+          foreground: syntaxColors.controlImport,
+        },
+      },
+      {
+        scope: [
+          'keyword.control.new',
+          'keyword.operator.new',
+          'keyword.other.important.css',
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
+        scope: [
+          'keyword.operator.other.powershell',
+          'keyword.other.statement-separator.powershell',
+        ],
+        settings: { foreground: syntaxColors.operator },
+      },
+      {
+        scope: [
+          'keyword.operator.dereference.java',
+          'keyword.operator.navigation.groovy',
+        ],
+        settings: { foreground: syntaxColors.operator },
+      },
+
+      // 12. Punctuation
+      {
+        scope: [
+          'punctuation',
+          'punctuation.definition.tag',
+          'punctuation.separator.inheritance.php',
+          'punctuation.definition.tag.html',
+          'punctuation.definition.tag.begin.html',
+          'punctuation.definition.tag.end.html',
+          'punctuation.section.embedded',
+        ],
+        settings: { foreground: syntaxColors.tagPunctuation },
+      },
+      {
+        scope: [
+          'punctuation.definition.string.begin',
+          'punctuation.definition.string.end',
+          'punctuation.support.type.property-name.begin',
+          'punctuation.support.type.property-name.end',
+        ],
+        settings: {
+          foreground: syntaxColors.punctuation,
+        },
+      },
+      {
+        scope: [
+          'string.quoted.docstring.multi',
+          'string.quoted.docstring.multi.python punctuation.definition.string.begin',
+          'string.quoted.docstring.multi.python punctuation.definition.string.end',
+          'string.quoted.docstring.multi.python constant.character.escape',
+        ],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          'punctuation.definition.keyword.css',
+          'punctuation.section.property-list.begin.bracket.curly.css',
+          'punctuation.section.property-list.end.bracket.curly.css',
+        ],
+        settings: {
+          foreground: syntaxColors.punctuation,
+          // fontStyle: "bold",
+        },
+      },
+      {
+        scope: [
+          'punctuation.definition.attribute-selector.end.bracket.square.scss',
+          'punctuation.definition.attribute-selector.begin.bracket.square.scss',
+        ],
+        settings: {
+          foreground: colors.FG2,
+        },
+      },
+      {
+        scope: [
+          'punctuation.definition.constant.ruby',
+          'entity.other.attribute-name.placeholder punctuation',
+          'entity.other.attribute-name.pseudo-class punctuation',
+          'entity.other.attribute-name.pseudo-element punctuation',
+          'meta.group.double.toml',
+          'meta.brace.square',
+          'meta.group.toml',
+          'meta.object-binding-pattern-variable punctuation.destructuring',
+          'punctuation.colon.graphql',
+          'punctuation.definition.block.scalar.folded.yaml',
+          'punctuation.definition.block.scalar.literal.yaml',
+          'punctuation.definition.block.sequence.item.yaml',
+          'punctuation.definition.entity.other.inherited-class',
+          'punctuation.function.swift',
+          'punctuation.separator.dictionary.key-value',
+          'punctuation.separator.hash',
+          'punctuation.separator.inheritance',
+          'punctuation.separator.key-value',
+          'punctuation.separator.key-value.mapping.yaml',
+          'punctuation.separator.namespace',
+          'punctuation.separator.pointer-access',
+          'punctuation.separator.slice',
+          'string.unquoted.heredoc punctuation.definition.string',
+          'support.other.chomping-indicator.yaml',
+          'punctuation.separator.annotation',
+        ],
+        settings: { foreground: ansiColors.White },
+      },
+      {
+        scope: [
+          'meta.brace.round',
+          'meta.function-call punctuation',
+          'punctuation.definition.arguments.begin',
+          'punctuation.definition.arguments.end',
+          'punctuation.definition.entity.begin',
+          'punctuation.definition.entity.end',
+          'punctuation.definition.tag.cs',
+          'punctuation.definition.type.begin',
+          'punctuation.definition.type.end',
+          'punctuation.section.scope.begin',
+          'punctuation.section.scope.end',
+          'string.template meta.brace',
+          'string.template punctuation.accessor',
+        ],
+        settings: {
+          foreground: syntaxColors.punctuationBrace,
+        },
+      },
+      {
+        scope: [
+          'meta.string-contents.quoted.double punctuation.definition.variable',
+          'punctuation.definition.interpolation.begin',
+          'punctuation.definition.interpolation.end',
+          'punctuation.definition.template-expression.begin',
+          'punctuation.definition.template-expression.end',
+          'punctuation.section.embedded.begin',
+          'punctuation.section.embedded.coffee',
+          'punctuation.section.embedded.end',
+          'punctuation.section.embedded.end source.php',
+          'punctuation.section.embedded.end source.ruby',
+          'punctuation.definition.variable.makefile',
+        ],
+        settings: {
+          foreground: syntaxColors.punctuationQuote,
+        },
+      },
+      {
+        scope: [
+          'meta.scope.for-loop.shell punctuation.definition.string.begin',
+          'meta.scope.for-loop.shell punctuation.definition.string.end',
+          'meta.scope.for-loop.shell string',
+          'punctuation.section.embedded.begin.tsx',
+          'punctuation.section.embedded.end.tsx',
+          'punctuation.section.embedded.begin.jsx',
+          'punctuation.section.embedded.end.jsx',
+          'punctuation.separator.list.comma.css',
+        ],
+        settings: {
+          foreground: syntaxColors.punctuationComma,
+        },
+      },
+      {
+        scope: [
+          'punctuation.definition.attribute-selector.end.bracket.square.scss',
+          'punctuation.definition.attribute-selector.begin.bracket.square.scss',
+        ],
+        settings: { foreground: colors.FG2 },
+      },
+      {
+        scope: [
+          'punctuation.definition.constant.restructuredtext',
+          'punctuation.definition.directive.restructuredtext',
+        ],
+        settings: {
+          foreground: syntaxColors.constant,
         },
       },
 
+      // 13. Meta
+      {
+        scope: ['meta.tag', 'string'],
+        settings: { foreground: colors.FG1 },
+      },
+      {
+        scope: ['meta.diff', 'meta.diff.header'],
+        settings: { foreground: syntaxColors.comment },
+      },
       {
         scope: [
-          'storage',
-          'meta.implementation storage.type.objc',
-          'meta.interface-or-protocol storage.type.objc',
-          'source.groovy storage.type.def',
+          'meta.link.reference.def.restructuredtext',
+          'string.other.link.description',
+          'string.other.link.title',
         ],
+        settings: { foreground: syntaxColors.constant },
+      },
+      {
+        scope: ['meta.selector'],
         settings: {
-          foreground: syntaxColors.storage,
+          foreground: syntaxColors.selector,
         },
       },
-      //--------------------------------------------------------------------
-      // REGEXP
-      //--------------------------------------------------------------------
+      {
+        scope: ['meta.selectionset.graphql meta.arguments variable'],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+
+      // 14. Regular expressions
+      {
+        scope: ['string.regexp'],
+        settings: { foreground: ansiColors.BrightRed },
+      },
+      {
+        scope: ['constant.character.escape.backslash.regexp'],
+        settings: { foreground: syntaxColors.punctuation },
+      },
+      {
+        scope: ['constant.other.character-class.set.regexp'],
+        settings: { foreground: ansiColors.Green },
+      },
       {
         scope: [
-          'string.regexp',
-          'constant.other.character-class.set.regexp',
-          'constant.character.escape.backslash.regexp',
+          'string.regexp punctuation.definition.string.begin',
+          'string.regexp punctuation.definition.string.end',
         ],
-        settings: {
-          foreground: ansiColors.Yellow,
-        },
+        settings: { foreground: ansiColors.Red },
       },
       {
         scope: ['punctuation.definition.group.capture.regexp'],
@@ -1694,138 +1512,100 @@ export function generateSemanticThemeJSON(
         },
       },
       {
-        scope: [
-          'string.regexp punctuation.definition.string.begin',
-          'string.regexp punctuation.definition.string.end',
-        ],
-        settings: {
-          foreground: ansiColors.Red,
-        },
-      },
-      {
         scope: ['punctuation.definition.character-class.regexp'],
-        settings: {
-          foreground: ansiColors.BrightYellow,
-        },
+        settings: { foreground: ansiColors.BrightYellow },
       },
       {
         scope: ['punctuation.definition.group.regexp'],
-        settings: {
-          foreground: ansiColors.BrightBlue,
-        },
+        settings: { foreground: ansiColors.BrightBlue },
       },
       {
         scope: [
           'punctuation.definition.group.assertion.regexp',
           'keyword.operator.negation.regexp',
         ],
-        settings: {
-          foreground: ansiColors.Red,
-        },
+        settings: { foreground: ansiColors.Red },
       },
       {
         scope: ['meta.assertion.look-ahead.regexp'],
-        settings: {
-          foreground: ansiColors.BrightBlue,
-        },
+        settings: { foreground: ansiColors.BrightBlue },
       },
 
-      //--------------------------------------------------------------------
-      // JSON
-      //--------------------------------------------------------------------
+      // 15. Makefile
+      {
+        scope: ['meta.scope.prerequisites.makefile'],
+        settings: { foreground: ansiColors.BrightYellow },
+      },
+
+      // 16. JSON
       {
         scope: [
           'source.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.AC2,
-        },
+        settings: { foreground: colors.AC2 },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.INFO,
-        },
+        settings: { foreground: colors.INFO },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.WARNING,
-        },
+        settings: { foreground: colors.WARNING },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.ERROR,
-        },
+        settings: { foreground: colors.ERROR },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.SUCCESS,
-        },
+        settings: { foreground: colors.SUCCESS },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.AC1,
-        },
+        settings: { foreground: colors.AC1 },
       },
       {
         scope: [
           'source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json',
         ],
-        settings: {
-          foreground: colors.AC2,
-        },
+        settings: { foreground: colors.AC2 },
       },
 
-      //--------------------------------------------------------------------
-      // MISC
-      //--------------------------------------------------------------------
+      // 17. Special tokens
       {
         scope: 'token.info-token',
-        settings: {
-          foreground: colors.INFO,
-        },
+        settings: { foreground: colors.INFO },
       },
       {
         scope: 'token.warn-token',
-        settings: {
-          foreground: colors.WARNING,
-        },
+        settings: { foreground: colors.WARNING },
       },
       {
         scope: 'token.error-token',
-        settings: {
-          foreground: colors.ERROR,
-        },
+        settings: { foreground: colors.ERROR },
       },
       {
         scope: 'token.debug-token',
-        settings: {
-          foreground: colors.WARNING,
-        },
+        settings: { foreground: colors.WARNING },
       },
     ],
+
     semanticTokenColors: {
       namespace: syntaxColors.class, //class
       support: syntaxColors.support,

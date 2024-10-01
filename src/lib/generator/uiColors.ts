@@ -203,7 +203,8 @@ export function updateThemeColorsWithSaturation(
     saturationMultiplier: number
   ) => {
     const hsl = Color(color).hsl()
-    const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier)
+    let newSaturation = Math.min(100, newUiSaturation * saturationMultiplier)
+    if (newSaturation < 2) newSaturation = 2
     return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
   }
 
