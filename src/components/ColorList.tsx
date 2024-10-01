@@ -59,21 +59,21 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
   }
 
   return (
-    <div className="mb-4">
+    <div
+      style={{ backgroundColor: colors.BG1 }}
+      className="p-4 border-border border rounded-lg shadow-md"
+    >
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold mb-5">{title}</h2>
         <Button size={'sm'} className="" onClick={handleUnlockAll}>
           Unlock All
         </Button>
       </div>
-      <div
-        className="grid grid-cols-3 gap-2"
-        style={{ background: colors.BG1 }}
-      >
+      <div className="grid grid-rows-8 grid-flow-col-dense auto-cols-fr gap-2">
         {Object.entries(displayColors).map(([key, value]) => (
           <div key={key} className="relative">
             <div
-              className="w-full h-12 cursor-pointer flex items-center justify-between px-2"
+              className="h-8 cursor-pointer flex items-center justify-between px-2 rounded-md shadow-sm"
               style={{ backgroundColor: getDisplayColor(key, value as string) }}
               onClick={() => setActiveColor(key)}
             >

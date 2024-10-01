@@ -4,7 +4,6 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div>
-      <Navigation />
       <main className="container mx-auto mt-8 p-4">
         <h1 className="text-4xl font-bold mb-4">
           Welcome to VSCode Themes Community

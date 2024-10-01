@@ -6,31 +6,29 @@ import {
   SignedIn,
   SignedOut,
 } from '@clerk/nextjs'
+import { Button } from './ui/button'
 
 const Navigation = () => {
   return (
     <nav className="bg-background text-foreground p-4">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
           VSCode Themes Community
         </Link>
         <div className="flex gap-4 items-center ">
           <Link href="/discover">Discover</Link>
-          <Link href="/generator">Create</Link>
           <SignedIn>
+            <Link href="/generator">Create</Link>
+            <Link href="/saved-themes">Your Themes</Link>
             <Link href="/profile">Profile</Link>
             <UserButton />
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded">
-                Sign In
-              </button>
+              <Button>Sign In</Button>
             </SignInButton>
             <SignUpButton mode="modal">
-              <button className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
-                Sign Up
-              </button>
+              <Button variant="secondary">Sign Up</Button>
             </SignUpButton>
           </SignedOut>
         </div>

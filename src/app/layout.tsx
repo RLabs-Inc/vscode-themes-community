@@ -12,6 +12,7 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
+import Navigation from '@/components/Navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,6 +41,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Navigation />
             {children}
           </ThemeProvider>
         </body>

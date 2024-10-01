@@ -149,22 +149,27 @@ export const ThemeProvider: React.FC<{
     ]
   )
 
-  const loadTheme = useCallback((theme: SavedTheme) => {
-    setIsDarkState(theme.isDark)
-    setTheme(theme.isDark ? 'dark' : 'light')
-    setColors(theme.uiColors)
-    setSyntaxColors(theme.syntaxColors)
-    setAnsiColors(theme.ansiColors)
-    setBaseHueState(theme.baseHue)
-    setUiSaturationState(theme.uiSaturation)
-    setSyntaxSaturationState(theme.syntaxSaturation)
-    setSchemeState(
-      typeof theme.scheme === 'number'
-        ? theme.scheme
-        : (ColorScheme[theme.scheme as keyof typeof ColorScheme] as ColorScheme)
-    )
-    setCurrentThemeId(theme.id)
-  }, [])
+  const loadTheme = useCallback(
+    (theme: SavedTheme) => {
+      setIsDarkState(theme.isDark)
+      setTheme(theme.isDark ? 'dark' : 'light')
+      setColors(theme.uiColors)
+      setSyntaxColors(theme.syntaxColors)
+      setAnsiColors(theme.ansiColors)
+      setBaseHueState(theme.baseHue)
+      setUiSaturationState(theme.uiSaturation)
+      setSyntaxSaturationState(theme.syntaxSaturation)
+      setSchemeState(
+        typeof theme.scheme === 'number'
+          ? theme.scheme
+          : (ColorScheme[
+              theme.scheme as keyof typeof ColorScheme
+            ] as ColorScheme)
+      )
+      setCurrentThemeId(theme.id)
+    },
+    [setTheme]
+  )
 
   const deleteThemeFromContext = useCallback(async (themeId: number) => {
     await deleteTheme(themeId)

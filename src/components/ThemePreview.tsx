@@ -482,28 +482,6 @@ const ThemePreview: React.FC = () => {
     return convertTheme(themeObject)
   }, [colors, syntaxColors, ansiColors])
 
-  const handleEditorDidMount = useCallback(
-    (
-      editor: editor.IStandaloneCodeEditor,
-      monaco: typeof import('monaco-editor')
-    ) => {
-      editorRef.current = { editor, monaco }
-      const model = editor.getModel()
-      if (model) {
-        model.updateOptions({
-          bracketColorizationOptions: {
-            enabled: false,
-            independentColorPoolPerBracketType: false,
-          },
-        })
-      }
-      setIsEditorReady(true)
-      setupTextmate()
-      updateTheme()
-    },
-    []
-  )
-
   const updateTheme = useCallback(() => {
     if (editorRef.current) {
       const { monaco } = editorRef.current
@@ -591,7 +569,29 @@ const ThemePreview: React.FC = () => {
     } catch (error) {
       console.error('Error setting up TextMate:', error)
     }
-  }, [])
+  }, [isOnigasmInitialized])
+
+  const handleEditorDidMount = useCallback(
+    (
+      editor: editor.IStandaloneCodeEditor,
+      monaco: typeof import('monaco-editor')
+    ) => {
+      editorRef.current = { editor, monaco }
+      const model = editor.getModel()
+      if (model) {
+        model.updateOptions({
+          bracketColorizationOptions: {
+            enabled: false,
+            independentColorPoolPerBracketType: false,
+          },
+        })
+      }
+      setIsEditorReady(true)
+      setupTextmate()
+      updateTheme()
+    },
+    [setupTextmate, updateTheme]
+  )
 
   useEffect(() => {
     if (isEditorReady && editorRef.current) {

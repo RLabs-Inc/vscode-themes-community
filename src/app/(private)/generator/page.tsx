@@ -19,7 +19,6 @@ export default function GeneratorPage() {
   return (
     <ThemeProvider userId={user.id}>
       <div>
-        <Navigation />
         <ThemeGenerator />
       </div>
     </ThemeProvider>

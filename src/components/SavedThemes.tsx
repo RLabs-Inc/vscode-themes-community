@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import ThemeCard from '@/components/ThemeCard'
 import { SavedTheme } from '@/lib/types/colors'
-import { useUser } from '@clerk/nextjs'
 
 export function SavedThemesContent({
   initialThemes,
@@ -11,7 +10,6 @@ export function SavedThemesContent({
   initialThemes: SavedTheme[]
 }) {
   const [themes, setThemes] = useState(initialThemes)
-  const { user } = useUser()
 
   const handleEdit = (theme: SavedTheme) => {
     // Implement theme editing logic

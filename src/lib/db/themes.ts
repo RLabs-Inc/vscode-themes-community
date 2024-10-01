@@ -72,6 +72,11 @@ function safeJsonParse(value: any) {
   return value
 }
 
+export const getPublicThemes = async (): Promise<SavedTheme[]> => {
+  const results = await db.select().from(ThemesTable)
+  return results.map(parseSavedTheme)
+}
+
 function parseSavedTheme(rawTheme: any): SavedTheme {
   const parsedTheme = {
     ...rawTheme,

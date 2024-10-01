@@ -278,7 +278,7 @@ const ThemeControls: React.FC = () => {
             </TooltipContent>
           </Tooltip>
         </div>
-        <div className="flex flex-col justify-between gap-5">
+        <div className="flex flex-col justify-between gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -347,7 +347,8 @@ const ThemeControls: React.FC = () => {
               <p>Regenerate terminal colors based on the current theme</p>
             </TooltipContent>
           </Tooltip>
-
+        </div>
+        <div className="flex flex-col justify-between gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <ThemeLoader />
