@@ -54,83 +54,95 @@ export function generateThemeColors(
       initialColors.BG1 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 0.6),
         isDark ? bgBase + randomInteger(0, 5) : bgBase - randomInteger(0, 2)
       ),
     BG2:
       initialColors.BG2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 0.6),
         isDark ? bgBase + randomInteger(0, 9) : bgBase - randomInteger(0, 5)
       ),
     BG3:
       initialColors.BG3 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 0.6),
         isDark ? bgBase + randomInteger(0, 13) : bgBase - randomInteger(0, 7)
       ),
     FG1:
       initialColors.FG1 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 1),
         isDark ? fgBase - randomInteger(0, 7) : fgBase + randomInteger(0, 9)
       ),
     FG2:
       initialColors.FG2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 1),
         isDark ? fgBase - randomInteger(3, 15) : fgBase + randomInteger(3, 15)
       ),
     FG3:
       initialColors.FG3 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1),
+        uiSaturation * randomNumber(0.1, 1),
         isDark ? bgBase + randomInteger(0, 5) : bgBase - randomInteger(0, 5)
       ),
     AC1:
       initialColors.AC1 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(1, 1.5),
+        uiSaturation * randomNumber(0.2, 1.5),
         isDark ? 60 : fgBase + randomInteger(0, 40)
       ),
     AC2:
       initialColors.AC2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(1, 1.5),
+        uiSaturation * randomNumber(0.2, 1.5),
         isDark ? 65 : fgBase + randomInteger(0, 50)
       ),
     BORDER:
       initialColors.BORDER ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0, 1.2),
+        uiSaturation * randomNumber(0.1, 1),
         isDark ? bgBase + 10 : bgBase - 10
       ),
     INFO:
       initialColors.INFO ||
-      generateColor(210, uiSaturation * randomNumber(0, 1.5), isDark ? 65 : 45), // Blue spectrum
+      generateColor(
+        210,
+        uiSaturation * randomNumber(0.2, 1.5),
+        isDark ? 65 : 45
+      ), // Blue spectrum
     ERROR:
       initialColors.ERROR ||
-      generateColor(0, uiSaturation * randomNumber(0, 1.5), isDark ? 65 : 35), // Red spectrum
+      generateColor(0, uiSaturation * randomNumber(0.2, 1.5), isDark ? 65 : 35), // Red spectrum
     WARNING:
       initialColors.WARNING ||
-      generateColor(30, uiSaturation * randomNumber(0, 1.5), isDark ? 65 : 35), // Orange spectrum
+      generateColor(
+        30,
+        uiSaturation * randomNumber(0.2, 1.5),
+        isDark ? 65 : 35
+      ), // Orange spectrum
     SUCCESS:
       initialColors.SUCCESS ||
-      generateColor(120, uiSaturation * randomNumber(0, 1.5), isDark ? 40 : 25), // Green spectrum
+      generateColor(
+        120,
+        uiSaturation * randomNumber(0.2, 1.5),
+        isDark ? 40 : 25
+      ), // Green spectrum
     lineHighlight:
       initialColors.lineHighlight ||
       Color(
         generateColor(
           schemeHues[randomInteger(0, schemeHues.length - 1)],
-          uiSaturation * randomNumber(0, 1),
+          uiSaturation * randomNumber(0.1, 1),
           isDark ? bgBase + 5 : bgBase - 5
         )
       ).hex() + '70',
@@ -139,7 +151,7 @@ export function generateThemeColors(
       Color(
         generateColor(
           schemeHues[randomInteger(0, schemeHues.length - 1)],
-          uiSaturation * randomNumber(0, 1),
+          uiSaturation * randomNumber(0.1, 1),
           isDark ? bgBase + 15 : bgBase - 15
         )
       ).hex() + '70',
@@ -148,7 +160,7 @@ export function generateThemeColors(
       Color(
         generateColor(
           schemeHues[randomInteger(0, schemeHues.length - 1)],
-          uiSaturation * randomNumber(0, 1),
+          uiSaturation * randomNumber(0.1, 1),
           isDark ? bgBase + 20 : bgBase - 20
         )
       ).hex() + '70',
@@ -214,19 +226,19 @@ export function updateThemeColorsWithSaturation(
   const updatedColors: UIColors = { ...currentColors }
 
   const saturationMultipliers = {
-    BG1: randomNumber(0, 1),
-    BG2: randomNumber(0, 1),
-    BG3: randomNumber(0, 1),
-    FG1: randomNumber(0, 1),
-    FG2: randomNumber(0, 1),
-    FG3: randomNumber(0, 1),
-    AC1: randomNumber(1, 1.2),
-    AC2: randomNumber(1, 1.2),
-    BORDER: randomNumber(0, 1),
-    INFO: randomNumber(0, 1.5),
-    ERROR: randomNumber(1, 1.5),
-    WARNING: randomNumber(1, 1.5),
-    SUCCESS: randomNumber(0, 1.5),
+    BG1: 0.35,
+    BG2: 0.4,
+    BG3: 0.45,
+    FG1: 0.5,
+    FG2: 0.55,
+    FG3: 0.6,
+    AC1: 0.9,
+    AC2: 0.95,
+    BORDER: 0.75,
+    INFO: 0.85,
+    ERROR: 0.8,
+    WARNING: 0.85,
+    SUCCESS: 0.85,
   }
 
   Object.keys(updatedColors).forEach((key) => {

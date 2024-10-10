@@ -1,15 +1,13 @@
-import { randomInteger } from '@/lib/utils/math'
+import { randomInteger, randomNumber } from '@/lib/utils/math'
 import { adjustCommentColor, ensureReadability } from './colorUtils'
 import { SyntaxColors } from '@/lib/types/colors'
 import Color from 'color'
-import { Exo_2 } from 'next/font/google'
 
 export function generateSyntaxColors(
   backgroundColor: string,
   schemeHues: number[],
   syntaxSaturation: number = 70,
-  lockedColors: Partial<SyntaxColors> = {},
-  forceRegenerate: boolean = false
+  lockedColors: Partial<SyntaxColors> = {}
 ): SyntaxColors {
   const baseColor = Color(backgroundColor)
   const isDark = baseColor.isDark()
@@ -52,7 +50,7 @@ export function generateSyntaxColors(
       lockedColors.keyword ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.1,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 13)
       ),
     comment:
@@ -60,23 +58,31 @@ export function generateSyntaxColors(
       generateColor(randomInteger(0, schemeHues.length - 1), 0.5, 0, 0, false),
     function:
       lockedColors.function ||
-      generateColor(functionHueIndex, 1.05, randomInteger(0, 7)),
+      generateColor(
+        functionHueIndex,
+        randomNumber(0.75, 1.5),
+        randomInteger(0, 7)
+      ),
     functionCall:
       lockedColors.functionCall ||
       generateColor(
         functionHueIndex,
-        1,
+        randomNumber(0.75, 1.5),
         randomInteger(5, 13),
         randomInteger(13, 26)
       ),
     variable:
       lockedColors.variable ||
-      generateColor(variableHueIndex, 0.9, randomInteger(0, 3)),
+      generateColor(
+        variableHueIndex,
+        randomNumber(0.75, 1.5),
+        randomInteger(0, 3)
+      ),
     variableDeclaration:
       lockedColors.variableDeclaration ||
       generateColor(
         variableHueIndex,
-        0.95,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 9),
         randomInteger(13, 26)
       ),
@@ -84,18 +90,18 @@ export function generateSyntaxColors(
       lockedColors.variableProperty ||
       generateColor(
         variableHueIndex,
-        0.85,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 6),
         randomInteger(17, 39)
       ),
     type:
       lockedColors.type ||
-      generateColor(typeHueIndex, 1.05, randomInteger(0, 5)),
+      generateColor(typeHueIndex, randomNumber(0.2, 1.5), randomInteger(0, 5)),
     typeParameter:
       lockedColors.typeParameter ||
       generateColor(
         typeHueIndex,
-        1,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 5),
         randomInteger(15, 27)
       ),
@@ -103,52 +109,56 @@ export function generateSyntaxColors(
       lockedColors.constant ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.15,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 9)
       ),
     class:
       lockedColors.class ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.1,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 3)
       ),
     parameter:
       lockedColors.parameter ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        0.9,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 7)
       ),
     property:
       lockedColors.property ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        0.95,
+        randomNumber(0.75, 1.5),
         randomInteger(3, 9)
       ),
     operator:
       lockedColors.operator ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        0.7,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 13)
       ),
     storage:
       lockedColors.storage ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.05,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 5)
       ),
     punctuation:
       lockedColors.punctuation ||
-      generateColor(punctuationHueIndex, 0.4, randomInteger(3, 15)),
+      generateColor(
+        punctuationHueIndex,
+        randomNumber(0.2, 1.5),
+        randomInteger(3, 15)
+      ),
     punctuationQuote:
       lockedColors.punctuationQuote ||
       generateColor(
         punctuationHueIndex,
-        0.45,
+        randomNumber(0.2, 1.5),
         randomInteger(5, 23),
         randomInteger(9, 17)
       ),
@@ -156,7 +166,7 @@ export function generateSyntaxColors(
       lockedColors.punctuationBrace ||
       generateColor(
         punctuationHueIndex,
-        0.4,
+        randomNumber(0.2, 1.5),
         randomInteger(6, 19),
         randomInteger(13, 21)
       ),
@@ -164,7 +174,7 @@ export function generateSyntaxColors(
       lockedColors.punctuationComma ||
       generateColor(
         punctuationHueIndex,
-        0.45,
+        randomNumber(0.2, 1.5),
         randomInteger(5, 23),
         randomInteger(0, 15)
       ),
@@ -172,21 +182,21 @@ export function generateSyntaxColors(
       lockedColors.selector ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.05,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 7)
       ),
     modifier:
       lockedColors.modifier ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 5)
       ),
     other:
       lockedColors.other ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.1,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 6)
       ),
     language:
@@ -198,12 +208,16 @@ export function generateSyntaxColors(
       ),
     control:
       lockedColors.control ||
-      generateColor(controlHueIndex, 1.15, -randomInteger(0, 13)),
+      generateColor(
+        controlHueIndex,
+        randomNumber(0.75, 1.5),
+        -randomInteger(0, 13)
+      ),
     controlFlow:
       lockedColors.controlFlow ||
       generateColor(
         controlHueIndex,
-        1.1,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 5),
         randomInteger(15, 27)
       ),
@@ -211,41 +225,47 @@ export function generateSyntaxColors(
       lockedColors.controlImport ||
       generateColor(
         controlHueIndex,
-        0.75,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 7),
         randomInteger(9, 17)
       ),
     tag:
-      lockedColors.tag || generateColor(tagHueIndex, 1.1, randomInteger(3, 9)),
+      lockedColors.tag ||
+      generateColor(tagHueIndex, randomNumber(0.75, 1.5), randomInteger(3, 9)),
     tagPunctuation:
       lockedColors.tagPunctuation ||
-      generateColor(tagHueIndex, 1, randomInteger(0, 6), randomInteger(9, 17)),
+      generateColor(
+        tagHueIndex,
+        randomNumber(0.2, 1.5),
+        randomInteger(0, 6),
+        randomInteger(9, 17)
+      ),
     attribute:
       lockedColors.attribute ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        0.95,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 10)
       ),
     support:
       lockedColors.support ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.15,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 7)
       ),
     unit:
       lockedColors.unit ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.1,
+        randomNumber(0.75, 1.5),
         -randomInteger(0, 5)
       ),
     datetime:
       lockedColors.datetime ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.05,
+        randomNumber(0.75, 1.5),
         randomInteger(0, 5)
       ),
   }
