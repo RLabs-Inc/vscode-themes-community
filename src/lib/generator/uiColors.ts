@@ -24,7 +24,7 @@ export function generateThemeColors(
 
   const schemeHues = generateSchemeColors(baseHue, scheme)
 
-  const bgBase = isDark ? randomInteger(0, 7) : randomInteger(93, 100)
+  const bgBase = isDark ? randomInteger(0, 15) : randomInteger(85, 100)
   const fgBase = isDark ? randomInteger(85, 100) : randomInteger(0, 15)
 
   const generateColor = (

@@ -51,7 +51,7 @@ const ThemeControls: React.FC = () => {
   const handleRandomize = (few = false) => {
     const newBaseHue = Math.floor(Math.random() * 360)
     const newUiSaturation = randomInteger(15, 65)
-    const newSyntaxSaturation = randomInteger(10, 65)
+    const newSyntaxSaturation = randomInteger(20, 65)
     const schemeValues = Object.values(ColorScheme).filter(
       (value) => typeof value === 'number'
     ) as number[]

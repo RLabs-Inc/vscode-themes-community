@@ -7,6 +7,7 @@ import { IGrammarDefinition, Registry, RegistryOptions } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'
 import { generateSemanticThemeJSON } from '@/lib/generator/export'
 import { convertTheme } from '@/lib/utils/convertTheme'
+import Color from 'color'
 
 interface ITokenEntry {
   name?: string
@@ -91,7 +92,59 @@ const codeSnippets = {
     '  );\n' +
     '};\n' +
     '\n' +
-    'export default UserProfile;\n',
+    'export default UserProfile;\n' +
+    'import type {\n' +
+    '  UIColors,\n' +
+    '  SyntaxColors,\n' +
+    '  AnsiColors,\n' +
+    '  VSCodeTheme,\n' +
+    '} from "@/lib/types/colors"\n' +
+    '\n' +
+    'import Color from "color"\n' +
+    '\n' +
+    'export function generateSemanticThemeJSON(\n' +
+    '  name: string = "Generated Color Theme",\n' +
+    '  colors: UIColors,\n' +
+    '  syntaxColors: SyntaxColors,\n' +
+    '  ansiColors: AnsiColors\n' +
+    '): { themeJSON: string; themeObject: VSCodeTheme } {\n' +
+    '  const theme = {\n' +
+    '    name: name,\n' +
+    '    type: Color(colors.BG1).isDark()\n' +
+    '      ? ("dark" as "dark" | "light")\n' +
+    '      : ("light" as "dark" | "light"),\n' +
+    '    semanticClass: "theme.rlabs",\n' +
+    '    semanticHighlighting: true,\n' +
+    '    colors: {\n' +
+    '      // # Integrated Terminal Colors\n' +
+    '      "terminal.background": colors.BG1,\n' +
+    '      "terminal.foreground": colors.FG1,\n' +
+    '      "terminal.border": colors.BORDER,\n' +
+    '      "terminal.ansiBrightBlack": ansiColors.BrightBlack,\n' +
+    '      "terminal.ansiBrightRed": ansiColors.BrightRed,\n' +
+    '      "terminal.ansiBrightGreen": ansiColors.BrightGreen,\n' +
+    '      "terminal.ansiBrightYellow": ansiColors.BrightYellow,\n' +
+    '      "terminal.ansiBrightBlue": ansiColors.BrightBlue,\n' +
+    '      "terminal.ansiBrightMagenta": ansiColors.BrightMagenta,\n' +
+    '      "terminal.ansiBrightCyan": ansiColors.BrightCyan,\n' +
+    '      "terminal.ansiBrightWhite": ansiColors.BrightWhite,\n' +
+    '      "terminal.ansiBlack": ansiColors.Black,\n' +
+    '      "terminal.ansiRed": ansiColors.Red,\n' +
+    '      "terminal.ansiGreen": ansiColors.Green,\n' +
+    '      "terminal.ansiYellow": ansiColors.Yellow,\n' +
+    '      "terminal.ansiBlue": ansiColors.Blue,\n' +
+    '      "terminal.ansiMagenta": ansiColors.Magenta,\n' +
+    '      "terminal.ansiCyan": ansiColors.Cyan,\n' +
+    '      "terminal.ansiWhite": ansiColors.White,\n' +
+    '      "terminal.selectionBackground": colors.selection,\n' +
+    '    }\n' +
+    '  };\n' +
+    '\n' +
+    '  return {\n' +
+    '    themeJSON: JSON.stringify(theme),\n' +
+    '    themeObject: theme\n' +
+    '  };\n' +
+    '}\n',
 
   'javascript.js':
     '// Class definition\n' +
@@ -757,8 +810,8 @@ const ThemePreview: React.FC = () => {
       </div>
       <p className="text-xs text-center mt-2">
         * This is a preview of the theme. The colors and tokens are not accurate
-        because of limitations of the monaco editor. The result in vscode will
-        be more granular and slightly different.
+        because of limitations in monaco editor. The result in vscode can be
+        more granular and slightly different.
       </p>
     </section>
   )

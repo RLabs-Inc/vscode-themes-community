@@ -980,61 +980,37 @@ export function generateSemanticThemeJSON(
       // ENTITIES
       //--------------------------------------------------------------------
       {
-        scope: ['entity.name.filename'],
-        settings: {
-          foreground: ansiColors.Yellow,
-        },
-      },
-      {
-        scope: ['entity.name.directive.restructuredtext'],
-        settings: {
-          foreground: ansiColors.Yellow,
-          fontStyle: 'italic',
-        },
-      },
-      {
         scope: [
           'entity.name.class',
           'entity.name.type.class',
           'entity.other.inherited-class',
-          'entity.name.fragment.graphql',
-          'variable.fragment.graphql',
         ],
         settings: {
           foreground: colors.AC2,
         },
       },
       {
-        scope: ['entity.name.tag'],
+        scope: [
+          'entity.name.tag',
+          'entity.other.attribute-name.parent-selector',
+        ],
         settings: {
           foreground: syntaxColors.tag,
           // fontStyle: "bold",
         },
       },
       {
-        scope: ['entity.other.attribute-name.parent-selector'],
-        settings: {
-          foreground: syntaxColors.tag,
-        },
-      },
-      {
-        scope: ['entity.other.attribute-name', 'meta.object-literal.key.js'],
+        scope: ['entity.other.attribute-name'],
         settings: {
           foreground: colors.AC2,
-          // fontStyle: "bold",
         },
       },
       {
         scope: [
           'entity.name.function',
-          'meta.function-call.generic',
-          'meta.function-call.object',
-          'meta.function-call.php',
-          'meta.function-call.static',
-          'meta.method-call.java meta.method',
-          'meta.method.groovy',
-          'support.function.any-method.lua',
-          'keyword.operator.function.infix',
+          'meta.function-call',
+          'meta.method-call',
+          'meta.method',
         ],
         settings: {
           foreground: colors.AC1,
@@ -1042,39 +1018,24 @@ export function generateSemanticThemeJSON(
       },
       {
         scope: [
-          // "source.css",
-          'variable.parameter',
-          'entity.name.variable.parameter',
           'meta.selector.css',
           'meta.at-rule.function variable',
           'meta.at-rule.mixin variable',
-          'meta.function.arguments variable.other.php',
-          'meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql',
+          'variable.parameter',
+          'entity.name.variable.parameter',
         ],
         settings: {
           foreground: syntaxColors.parameter,
         },
       },
       {
-        scope: ['entity.other.attribute-name.class.css'],
-        settings: {
-          foreground: colors.AC1,
-        },
-      },
-      {
         scope: ['support'],
         settings: {
           foreground: syntaxColors.support,
-          // fontStyle: "bold",
         },
       },
       {
-        scope: [
-          'entity.name.function.target.makefile',
-          'entity.name.section.toml',
-          'entity.name.tag.yaml',
-          'variable.other.key.toml',
-        ],
+        scope: ['entity.name', 'variable.other.key'],
         settings: {
           foreground: colors.AC1,
         },
@@ -1099,29 +1060,16 @@ export function generateSemanticThemeJSON(
       {
         scope: [
           'entity.other.attribute-name',
-          'meta.object-literal.key.js',
           'entity.other.attribute-name.pseudo-class.css',
         ],
         settings: {
           foreground: syntaxColors.attribute,
-          // fontStyle: "bold",
         },
       },
-
-      //--------------------------------------------------------------------
-      // TYPES
-      //--------------------------------------------------------------------
       {
-        scope: [
-          'source.css support.type.property-name',
-          'source.sass support.type.property-name',
-          'source.scss support.type.property-name',
-          'source.less support.type.property-name',
-          'source.stylus support.type.property-name',
-          'source.postcss support.type.property-name',
-        ],
+        scope: ['entity.other.attribute-name.class.css'],
         settings: {
-          foreground: colors.AC2,
+          foreground: colors.AC1,
         },
       },
 
@@ -1130,26 +1078,7 @@ export function generateSemanticThemeJSON(
       //--------------------------------------------------------------------
 
       {
-        scope: [
-          'keyword.primitive-datatypes.swift',
-          'keyword.type.cs',
-          'meta.protocol-list.objc',
-          'meta.return-type.objc',
-          'source.go storage.type',
-          'source.groovy storage.type',
-          'source.java storage.type',
-          'source.powershell entity.other.attribute-name',
-          'storage.class.std.rust',
-          'storage.type.attribute.swift',
-          'storage.type.c',
-          'storage.type.core.rust',
-          'storage.type.cs',
-          'storage.type.groovy',
-          'storage.type.objc',
-          'storage.type.php',
-          'storage.type.haskell',
-          'storage.type.ocaml',
-        ],
+        scope: ['storage.class', 'storage.type'],
         settings: {
           foreground: colors.AC2,
         },
@@ -1160,19 +1089,6 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.modifier,
         },
       },
-      {
-        scope: ['punctuation.definition.constant.restructuredtext'],
-        settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-      {
-        scope: ['storage.type.generic.java'],
-        settings: {
-          foreground: colors.AC1,
-        },
-      },
-
       //--------------------------------------------------------------------
       // COMMENTS
       //--------------------------------------------------------------------
@@ -1187,16 +1103,6 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.comment,
         },
       },
-      {
-        scope: [
-          'comment keyword.codetag.notation',
-          'comment.block.documentation keyword',
-          'comment.block.documentation storage.type.class',
-        ],
-        settings: {
-          foreground: syntaxColors.keyword,
-        },
-      },
 
       //--------------------------------------------------------------------
       // CONSTANTS
@@ -1208,7 +1114,7 @@ export function generateSemanticThemeJSON(
         },
       },
       {
-        scope: ['constant.other.color', 'constant.other.key.perl'],
+        scope: ['constant.other.color'],
         settings: {
           foreground: syntaxColors.other,
         },
@@ -1231,38 +1137,10 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.datetime,
         },
       },
-      {
-        scope: [
-          'constant.language.empty-list.haskell',
-          'constant.other.symbol.hashkey',
-          'constant.other.symbol.hashkey.ruby',
-        ],
-        settings: {
-          foreground: colors.FG2,
-        },
-      },
 
       //--------------------------------------------------------------------
       // KEYWORDS
       //--------------------------------------------------------------------
-      {
-        scope: [
-          'keyword.operator.other.powershell',
-          'keyword.other.statement-separator.powershell',
-        ],
-        settings: {
-          foreground: syntaxColors.operator,
-        },
-      },
-      {
-        scope: [
-          'keyword.operator.dereference.java',
-          'keyword.operator.navigation.groovy',
-        ],
-        settings: {
-          foreground: syntaxColors.operator,
-        },
-      },
       {
         scope: ['keyword.operator'],
         settings: {
@@ -1286,7 +1164,7 @@ export function generateSemanticThemeJSON(
         },
       },
       {
-        scope: ['keyword.expressions-and-types.swift', 'keyword.other.this'],
+        scope: ['keyword.other.this'],
         settings: {
           foreground: syntaxColors.constant,
         },
@@ -1295,7 +1173,6 @@ export function generateSemanticThemeJSON(
         scope: ['keyword.control.import', 'keyword.control.from'],
         settings: {
           foreground: syntaxColors.controlImport,
-          //fontStyle: "bold"
         },
       },
       {
@@ -1306,14 +1183,6 @@ export function generateSemanticThemeJSON(
         ],
         settings: {
           foreground: colors.AC2,
-          // fontStyle: "bold"
-        },
-      },
-
-      {
-        scope: ['meta.attribute-selector.scss'],
-        settings: {
-          foreground: syntaxColors.selector,
         },
       },
       {
@@ -1328,7 +1197,12 @@ export function generateSemanticThemeJSON(
         ],
         settings: {
           foreground: syntaxColors.controlFlow,
-          // fontStyle: "bold",
+        },
+      },
+      {
+        scope: ['meta.attribute-selector.scss'],
+        settings: {
+          foreground: syntaxColors.selector,
         },
       },
       {
@@ -1340,7 +1214,6 @@ export function generateSemanticThemeJSON(
         ],
         settings: {
           foreground: syntaxColors.tag,
-          fontStyle: '',
         },
       },
       {
@@ -1356,11 +1229,23 @@ export function generateSemanticThemeJSON(
         },
       },
       {
+        scope: [
+          'source.css support.type.property-name',
+          'source.sass support.type.property-name',
+          'source.scss support.type.property-name',
+          'source.less support.type.property-name',
+          'source.stylus support.type.property-name',
+          'source.postcss support.type.property-name',
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
         name: 'Constant property values in Stylesheets',
         scope: ['support.constant.property-value.css', 'constant.numeric.css'],
         settings: {
           foreground: colors.FG2,
-          fontStyle: '',
         },
       },
       {
@@ -1388,18 +1273,6 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.selector,
         },
       },
-      {
-        scope: [
-          'keyword.primitive-datatypes.swift',
-          'keyword.type.cs',
-          'meta.protocol-list.objc',
-          'meta.return-type.objc',
-          'source.powershell entity.other.attribute-name',
-        ],
-        settings: {
-          foreground: syntaxColors.attribute,
-        },
-      },
 
       //--------------------------------------------------------------------
       // PONCTUATION
@@ -1416,12 +1289,13 @@ export function generateSemanticThemeJSON(
         },
       },
       {
-        scope: [
-          'string.quoted.docstring.multi',
-          'string.quoted.docstring.multi.python punctuation.definition.string.begin',
-          'string.quoted.docstring.multi.python punctuation.definition.string.end',
-          'string.quoted.docstring.multi.python constant.character.escape',
-        ],
+        scope: ['punctuation.definition.constant.restructuredtext'],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ['string.quoted.docstring.multi'],
         settings: {
           foreground: colors.AC1,
         },
@@ -1431,30 +1305,20 @@ export function generateSemanticThemeJSON(
           'punctuation.definition.keyword.css',
           'punctuation.section.property-list.begin.bracket.curly.css',
           'punctuation.section.property-list.end.bracket.curly.css',
-        ],
-        settings: {
-          foreground: syntaxColors.punctuation,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        scope: [
           'punctuation.definition.attribute-selector.end.bracket.square.scss',
           'punctuation.definition.attribute-selector.begin.bracket.square.scss',
         ],
         settings: {
-          foreground: colors.FG2,
+          foreground: syntaxColors.punctuation,
         },
       },
       {
         scope: [
           'punctuation',
           'punctuation.definition.tag',
-          'punctuation.separator.inheritance.php',
           'punctuation.definition.tag.html',
           'punctuation.definition.tag.begin.html',
           'punctuation.definition.tag.end.html',
-          'punctuation.section.embedded',
         ],
         settings: {
           foreground: syntaxColors.tagPunctuation,
@@ -1462,31 +1326,14 @@ export function generateSemanticThemeJSON(
       },
       {
         scope: [
-          'punctuation.definition.constant.ruby',
-          'entity.other.attribute-name.placeholder punctuation',
-          'entity.other.attribute-name.pseudo-class punctuation',
-          'entity.other.attribute-name.pseudo-element punctuation',
-          'meta.group.double.toml',
+          'entity.other.attribute-name punctuation',
           'meta.brace.square',
           'meta.group.toml',
-          'meta.object-binding-pattern-variable punctuation.destructuring',
-          'punctuation.colon.graphql',
+          'meta.group.double.toml',
           'punctuation.definition.block.scalar.folded.yaml',
           'punctuation.definition.block.scalar.literal.yaml',
           'punctuation.definition.block.sequence.item.yaml',
-          'punctuation.definition.entity.other.inherited-class',
-          'punctuation.function.swift',
-          'punctuation.separator.dictionary.key-value',
-          'punctuation.separator.hash',
-          'punctuation.separator.inheritance',
-          'punctuation.separator.key-value',
-          'punctuation.separator.key-value.mapping.yaml',
-          'punctuation.separator.namespace',
-          'punctuation.separator.pointer-access',
-          'punctuation.separator.slice',
-          'string.unquoted.heredoc punctuation.definition.string',
-          'support.other.chomping-indicator.yaml',
-          'punctuation.separator.annotation',
+          'punctuation.separator',
         ],
         settings: {
           foreground: ansiColors.White,
@@ -1500,13 +1347,10 @@ export function generateSemanticThemeJSON(
           'punctuation.definition.arguments.end',
           'punctuation.definition.entity.begin',
           'punctuation.definition.entity.end',
-          'punctuation.definition.tag.cs',
           'punctuation.definition.type.begin',
           'punctuation.definition.type.end',
           'punctuation.section.scope.begin',
           'punctuation.section.scope.end',
-          'string.template meta.brace',
-          'string.template punctuation.accessor',
         ],
         settings: {
           foreground: syntaxColors.punctuationBrace,
@@ -1520,22 +1364,15 @@ export function generateSemanticThemeJSON(
           'punctuation.definition.template-expression.begin',
           'punctuation.definition.template-expression.end',
           'punctuation.section.embedded.begin',
-          'punctuation.section.embedded.coffee',
           'punctuation.section.embedded.end',
-          'punctuation.section.embedded.end source.php',
-          'punctuation.section.embedded.end source.ruby',
           'punctuation.definition.variable.makefile',
         ],
         settings: {
           foreground: syntaxColors.punctuationQuote,
-          // fontStyle: "bold",
         },
       },
       {
         scope: [
-          'meta.scope.for-loop.shell punctuation.definition.string.begin',
-          'meta.scope.for-loop.shell punctuation.definition.string.end',
-          'meta.scope.for-loop.shell string',
           'punctuation.section.embedded.begin.tsx',
           'punctuation.section.embedded.end.tsx',
           'punctuation.section.embedded.begin.jsx',
@@ -1552,18 +1389,12 @@ export function generateSemanticThemeJSON(
           foreground: syntaxColors.constant,
         },
       },
-      {
-        scope: ['punctuation.separator.inheritance.php'],
-        settings: {
-          foreground: syntaxColors.punctuation,
-        },
-      },
 
       //--------------------------------------------------------------------
       // VARIABLES
       //--------------------------------------------------------------------
       {
-        scope: ['variable', 'variable.other.readwrite'],
+        scope: ['variable'],
         settings: {
           foreground: syntaxColors.variable,
         },
@@ -1578,8 +1409,6 @@ export function generateSemanticThemeJSON(
       {
         scope: [
           'variable.language',
-          'variable.language punctuation.definition.variable.php',
-          'variable.other.readwrite.instance.ruby',
           'variable.parameter.function.language.special',
         ],
         settings: {
@@ -1587,56 +1416,26 @@ export function generateSemanticThemeJSON(
         },
       },
       {
-        scope: ['variable.other.object', 'meta.object-literal.key.ts'],
-        settings: {
-          foreground: syntaxColors.other,
-          // fontStyle: "bold",
-        },
-      },
-      {
-        scope: [
-          'variable.other.constant',
-          'meta.import variable.other.readwrite',
-          'meta.import variable.other.readwrite.alias',
-          'meta.export variable.other.readwrite.alias',
-          'meta.object-binding-pattern-variable variable.object.property',
-          'meta.variable.assignment.destructured.object.coffee variable',
-        ],
+        scope: ['variable.other.constant'],
         settings: {
           foreground: syntaxColors.variableDeclaration,
         },
       },
       {
-        scope: ['meta.selectionset.graphql meta.arguments variable'],
-        settings: {
-          foreground: colors.AC2,
-        },
-      },
-      {
-        scope: ['variable.graphql', 'support.variable'],
+        scope: ['support.variable'],
         settings: {
           foreground: syntaxColors.variable,
         },
       },
       {
         scope: [
-          'variable.other.property.ts',
-          'variable.other.property.js',
           'variable.other.property',
           'support.variable.property',
-          'support.variable.property.js',
           'variable.object.property',
           'variable.other.object.property',
-          'keyword.operation.graphql',
         ],
         settings: {
           foreground: syntaxColors.variableProperty,
-        },
-      },
-      {
-        scope: ['source.shell variable.other'],
-        settings: {
-          foreground: syntaxColors.constant,
         },
       },
 
@@ -1664,12 +1463,7 @@ export function generateSemanticThemeJSON(
       },
 
       {
-        scope: [
-          'storage',
-          'meta.implementation storage.type.objc',
-          'meta.interface-or-protocol storage.type.objc',
-          'source.groovy storage.type.def',
-        ],
+        scope: ['storage'],
         settings: {
           foreground: syntaxColors.storage,
         },
