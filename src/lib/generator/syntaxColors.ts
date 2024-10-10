@@ -276,14 +276,12 @@ export function generateSyntaxColors(
 
   // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {
-    if (key !== 'comment') {
-      if (!lockedColors[key as keyof SyntaxColors]) {
-        syntaxColors[key as keyof SyntaxColors] = ensureReadability(
-          syntaxColors[key as keyof SyntaxColors],
-          backgroundColor,
-          5.5
-        )
-      }
+    if (!lockedColors[key as keyof SyntaxColors]) {
+      syntaxColors[key as keyof SyntaxColors] = ensureReadability(
+        syntaxColors[key as keyof SyntaxColors],
+        backgroundColor,
+        5.5
+      )
     }
   })
 
