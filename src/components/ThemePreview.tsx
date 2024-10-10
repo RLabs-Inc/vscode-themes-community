@@ -7,7 +7,6 @@ import { IGrammarDefinition, Registry, RegistryOptions } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'
 import { generateSemanticThemeJSON } from '@/lib/generator/export'
 import { convertTheme } from '@/lib/utils/convertTheme'
-import Color from 'color'
 
 interface ITokenEntry {
   name?: string
@@ -555,7 +554,7 @@ const ThemePreview: React.FC = () => {
     if (!editorRef.current) return
 
     if (!isOnigasmInitialized) {
-      await loadWASM('/onigasm.wasm')
+      await loadWASM('onigasm.wasm')
       setIsOnigasmInitialized(true)
     }
 
@@ -564,15 +563,15 @@ const ThemePreview: React.FC = () => {
         scopeName: string
       ): Promise<IGrammarDefinition> => {
         const grammarMap: { [key: string]: string } = {
-          'source.tsx': '/TypeScriptReact.tmLanguage.json',
-          'source.js.jsx': '/JavaScriptReact.tmLanguage.json',
-          'source.ts': '/TypeScript.tmLanguage.json',
-          'source.js': '/JavaScript.tmLanguage.json',
-          'source.css': '/css.tmLanguage.json',
-          'text.html.markdown': '/markdown.tmLanguage.json',
-          'text.html.basic': '/html.tmLanguage.json',
-          'source.python': '/MagicPython.tmLanguage.json',
-          'source.yaml': '/yaml.tmLanguage.json',
+          'source.tsx': 'TypeScriptReact.tmLanguage.json',
+          'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
+          'source.ts': 'TypeScript.tmLanguage.json',
+          'source.js': 'JavaScript.tmLanguage.json',
+          'source.css': 'css.tmLanguage.json',
+          'text.html.markdown': 'markdown.tmLanguage.json',
+          'text.html.basic': 'html.tmLanguage.json',
+          'source.python': 'MagicPython.tmLanguage.json',
+          'source.yaml': 'yaml.tmLanguage.json',
         }
 
         if (scopeName in grammarMap) {
