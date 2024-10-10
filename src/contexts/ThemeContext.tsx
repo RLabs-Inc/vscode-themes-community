@@ -222,8 +222,7 @@ export const ThemeProvider: React.FC<{
               Object.entries(syntaxColors).filter(([key]) =>
                 lockedColorSet.has(key)
               )
-            ) as Partial<SyntaxColors>,
-            options.forceRegenerate
+            ) as Partial<SyntaxColors>
           )
 
           setColors(newColors)
