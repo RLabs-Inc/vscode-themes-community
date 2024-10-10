@@ -50,7 +50,7 @@ export function generateSyntaxColors(
       lockedColors.keyword ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 13)
       ),
     comment:
@@ -60,14 +60,14 @@ export function generateSyntaxColors(
       lockedColors.function ||
       generateColor(
         functionHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 7)
       ),
     functionCall:
       lockedColors.functionCall ||
       generateColor(
         functionHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(5, 13),
         randomInteger(13, 26)
       ),
@@ -75,14 +75,14 @@ export function generateSyntaxColors(
       lockedColors.variable ||
       generateColor(
         variableHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 3)
       ),
     variableDeclaration:
       lockedColors.variableDeclaration ||
       generateColor(
         variableHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 9),
         randomInteger(13, 26)
       ),
@@ -90,18 +90,22 @@ export function generateSyntaxColors(
       lockedColors.variableProperty ||
       generateColor(
         variableHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 6),
         randomInteger(17, 39)
       ),
     type:
       lockedColors.type ||
-      generateColor(typeHueIndex, randomNumber(0.2, 1.5), randomInteger(0, 5)),
+      generateColor(
+        typeHueIndex,
+        randomNumber(0.75, 1.25),
+        randomInteger(0, 5)
+      ),
     typeParameter:
       lockedColors.typeParameter ||
       generateColor(
         typeHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 5),
         randomInteger(15, 27)
       ),
@@ -109,72 +113,72 @@ export function generateSyntaxColors(
       lockedColors.constant ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 9)
       ),
     class:
       lockedColors.class ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 3)
       ),
     parameter:
       lockedColors.parameter ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 7)
       ),
     property:
       lockedColors.property ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(3, 9)
       ),
     operator:
       lockedColors.operator ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 13)
       ),
     storage:
       lockedColors.storage ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 5)
       ),
     punctuation:
       lockedColors.punctuation ||
       generateColor(
         punctuationHueIndex,
-        randomNumber(0.2, 1.5),
+        randomNumber(0.7, 1.25),
         randomInteger(3, 15)
       ),
     punctuationQuote:
       lockedColors.punctuationQuote ||
       generateColor(
         punctuationHueIndex,
-        randomNumber(0.2, 1.5),
+        randomNumber(0.7, 1.25),
         randomInteger(5, 23),
-        randomInteger(9, 17)
+        randomInteger(5, 17)
       ),
     punctuationBrace:
       lockedColors.punctuationBrace ||
       generateColor(
         punctuationHueIndex,
-        randomNumber(0.2, 1.5),
+        randomNumber(0.7, 1.25),
         randomInteger(6, 19),
-        randomInteger(13, 21)
+        randomInteger(7, 21)
       ),
     punctuationComma:
       lockedColors.punctuationComma ||
       generateColor(
         punctuationHueIndex,
-        randomNumber(0.2, 1.5),
+        randomNumber(0.7, 1.25),
         randomInteger(5, 23),
         randomInteger(0, 15)
       ),
@@ -182,42 +186,42 @@ export function generateSyntaxColors(
       lockedColors.selector ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 7)
       ),
     modifier:
       lockedColors.modifier ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 5)
       ),
     other:
       lockedColors.other ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 6)
       ),
     language:
       lockedColors.language ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        1.2,
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 9)
       ),
     control:
       lockedColors.control ||
       generateColor(
         controlHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 13)
       ),
     controlFlow:
       lockedColors.controlFlow ||
       generateColor(
         controlHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 5),
         randomInteger(15, 27)
       ),
@@ -225,18 +229,18 @@ export function generateSyntaxColors(
       lockedColors.controlImport ||
       generateColor(
         controlHueIndex,
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 7),
         randomInteger(9, 17)
       ),
     tag:
       lockedColors.tag ||
-      generateColor(tagHueIndex, randomNumber(0.75, 1.5), randomInteger(3, 9)),
+      generateColor(tagHueIndex, randomNumber(0.75, 1.25), randomInteger(3, 9)),
     tagPunctuation:
       lockedColors.tagPunctuation ||
       generateColor(
         tagHueIndex,
-        randomNumber(0.2, 1.5),
+        randomNumber(0.5, 1.25),
         randomInteger(0, 6),
         randomInteger(9, 17)
       ),
@@ -244,40 +248,42 @@ export function generateSyntaxColors(
       lockedColors.attribute ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 10)
       ),
     support:
       lockedColors.support ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 7)
       ),
     unit:
       lockedColors.unit ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         -randomInteger(0, 5)
       ),
     datetime:
       lockedColors.datetime ||
       generateColor(
         randomInteger(0, schemeHues.length - 1),
-        randomNumber(0.75, 1.5),
+        randomNumber(0.75, 1.25),
         randomInteger(0, 5)
       ),
   }
 
   // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {
-    if (!lockedColors[key as keyof SyntaxColors]) {
-      syntaxColors[key as keyof SyntaxColors] = ensureReadability(
-        syntaxColors[key as keyof SyntaxColors],
-        backgroundColor,
-        5.5
-      )
+    if (key !== 'comment') {
+      if (!lockedColors[key as keyof SyntaxColors]) {
+        syntaxColors[key as keyof SyntaxColors] = ensureReadability(
+          syntaxColors[key as keyof SyntaxColors],
+          backgroundColor,
+          5.5
+        )
+      }
     }
   })
 
@@ -315,38 +321,38 @@ export function updateSyntaxColorsWithSaturation(
   const updatedColors: SyntaxColors = { ...currentColors }
 
   const saturationMultipliers = {
-    keyword: 1.1,
+    keyword: 1,
     comment: 0.5,
-    function: 1.05,
+    function: 1,
     functionCall: 1,
-    variable: 0.9,
-    variableDeclaration: 0.95,
-    variableProperty: 0.85,
-    type: 1.05,
+    variable: 1,
+    variableDeclaration: 1,
+    variableProperty: 1,
+    type: 1,
     typeParameter: 1,
-    constant: 1.15,
-    class: 1.1,
-    parameter: 0.9,
-    property: 0.95,
-    operator: 0.7,
-    storage: 1.05,
-    punctuation: 0.4,
-    punctuationQuote: 0.45,
-    punctuationBrace: 0.4,
-    punctuationComma: 0.45,
-    selector: 1.05,
+    constant: 1,
+    class: 1,
+    parameter: 1,
+    property: 1,
+    operator: 1,
+    storage: 1,
+    punctuation: 0.8,
+    punctuationQuote: 0.8,
+    punctuationBrace: 0.8,
+    punctuationComma: 0.8,
+    selector: 1,
     modifier: 1,
-    other: 1.1,
-    language: 1.2,
-    control: 1.15,
-    controlFlow: 1.1,
-    controlImport: 1.05,
-    tag: 1.1,
+    other: 1,
+    language: 1,
+    control: 1,
+    controlFlow: 1,
+    controlImport: 1,
+    tag: 1,
     tagPunctuation: 1,
-    attribute: 0.95,
-    support: 1.15,
-    unit: 1.1,
-    datetime: 1.05,
+    attribute: 1,
+    support: 1,
+    unit: 1,
+    datetime: 1,
   }
 
   Object.keys(updatedColors).forEach((key) => {
