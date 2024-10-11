@@ -28,6 +28,7 @@ import {
   getThemesByUserId,
   deleteTheme,
   updateTheme as updateThemeInDb,
+  updateThemePublicityInDb,
 } from '@/lib/db/themes'
 import type { SavedTheme } from '@/lib/types/colors'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -82,6 +83,7 @@ interface ThemeContextType {
   updateCurrentTheme: (name: string) => Promise<void>
   isOnigasmInitialized: boolean
   setIsOnigasmInitialized: (value: boolean) => void
+  updateThemePublicity: (themeId: number, isPublic: boolean) => Promise<void>
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -109,7 +111,6 @@ export const ThemeProvider: React.FC<{
   const [savedThemes, setSavedThemes] = useState<SavedTheme[]>([])
   const [currentThemeId, setCurrentThemeId] = useState<number | null>(null)
   const [isOnigasmInitialized, setIsOnigasmInitialized] = useState(false)
-
   const loadSavedThemes = useCallback(async () => {
     if (userId) {
       const themes = await getThemesByUserId(userId)
@@ -181,6 +182,18 @@ export const ThemeProvider: React.FC<{
     await deleteTheme(themeId)
     setSavedThemes((prev) => prev.filter((theme) => theme.id !== themeId))
   }, [])
+
+  const updateThemePublicity = useCallback(
+    async (themeId: number, isPublic: boolean) => {
+      const updatedTheme = await updateThemePublicityInDb(themeId, isPublic)
+      setSavedThemes((prev) =>
+        prev.map((theme) =>
+          theme.id === updatedTheme.id ? updatedTheme : theme
+        )
+      )
+    },
+    []
+  )
 
   const generateColors = useCallback(
     (
@@ -370,19 +383,21 @@ export const ThemeProvider: React.FC<{
     async (name: string) => {
       if (!currentThemeId || !userId) return
 
-      const themeToUpdate: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'> =
-        {
-          name,
-          userId,
-          uiColors: colors,
-          syntaxColors: syntaxColors,
-          ansiColors: ansiColors,
-          isDark,
-          baseHue,
-          uiSaturation,
-          syntaxSaturation,
-          scheme,
-        }
+      const themeToUpdate: Omit<
+        SavedTheme,
+        'id' | 'createdAt' | 'updatedAt' | 'public'
+      > = {
+        name,
+        userId,
+        uiColors: colors,
+        syntaxColors: syntaxColors,
+        ansiColors: ansiColors,
+        isDark,
+        baseHue,
+        uiSaturation,
+        syntaxSaturation,
+        scheme,
+      }
 
       const updatedTheme = await updateThemeInDb(currentThemeId, themeToUpdate)
       setSavedThemes((prev) =>
@@ -439,6 +454,7 @@ export const ThemeProvider: React.FC<{
     updateCurrentTheme,
     isOnigasmInitialized,
     setIsOnigasmInitialized,
+    updateThemePublicity,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

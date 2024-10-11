@@ -1,8 +1,17 @@
 'use client'
 
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { SavedTheme } from '@/lib/types/colors'
-import { MoreVertical, Edit, Download, Eye, Share2 } from 'lucide-react'
+import {
+  MoreVertical,
+  Edit,
+  Download,
+  Eye,
+  Share2,
+  Loader2,
+} from 'lucide-react'
+import { useThemes } from '@/hooks/useThemes'
 
 type ThemeCardPublicProps = {
   theme: SavedTheme
@@ -13,8 +22,10 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
   theme,
   onClick,
 }) => {
-  const handleDownload = (theme: SavedTheme) => {
-    console.log('Downloading theme:', theme)
+  const { downloadTheme, isThemePending } = useThemes([theme])
+
+  const handleDownload = () => {
+    downloadTheme(theme.id)
   }
 
   const handlePreview = (theme: SavedTheme) => {
@@ -73,9 +84,14 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
           <Button
             variant="outline"
             size="icon"
-            onClick={() => handleDownload(theme)}
+            onClick={handleDownload}
+            disabled={isThemePending(theme.id)}
           >
-            <Download className="h-4 w-4" />
+            {isThemePending(theme.id) ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
           </Button>
           <Button
             variant="outline"

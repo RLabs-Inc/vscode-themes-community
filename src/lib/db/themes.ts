@@ -1,10 +1,31 @@
 'use server'
 
-import { z } from 'zod'
-import { ColorScheme, SavedTheme, SavedThemeSchema } from '../types/colors'
+import { revalidatePath } from 'next/cache'
+import { ColorScheme, type SavedTheme, SavedThemeSchema } from '../types/colors'
 import { db } from '../drizzle/db'
 import { ThemesTable } from '../drizzle/schema'
 import { eq } from 'drizzle-orm'
+import { generateVSIX } from '@/lib/generator/exportVSIX'
+
+export async function downloadThemeVSIX(
+  themeId: number
+): Promise<Buffer | null> {
+  const theme = await getThemeById(themeId)
+  if (!theme) return null
+
+  const vsixBuffer = await generateVSIX(theme)
+  return vsixBuffer
+}
+
+export async function updateThemePublicity(themeId: number, isPublic: boolean) {
+  await updateThemePublicityInDb(themeId, isPublic)
+  revalidatePath('/saved-themes')
+}
+
+export async function deleteThemeFromDb(themeId: number) {
+  await db.delete(ThemesTable).where(eq(ThemesTable.id, themeId))
+  revalidatePath('/saved-themes')
+}
 
 export const saveTheme = async (
   theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>
@@ -17,6 +38,19 @@ export const saveTheme = async (
     })
     .returning()
   return parseSavedTheme(result[0])
+}
+
+export async function updateThemePublicityInDb(
+  themeId: number,
+  isPublic: boolean
+): Promise<SavedTheme> {
+  const [updatedTheme] = await db
+    .update(ThemesTable)
+    .set({ public: isPublic })
+    .where(eq(ThemesTable.id, themeId))
+    .returning()
+
+  return parseSavedTheme(updatedTheme)
 }
 
 export const updateTheme = async (
@@ -35,10 +69,6 @@ export const updateTheme = async (
     .where(eq(ThemesTable.id, id))
     .returning()
   return parseSavedTheme(result[0])
-}
-
-export const deleteTheme = async (id: number): Promise<void> => {
-  await db.delete(ThemesTable).where(eq(ThemesTable.id, id))
 }
 
 export const getThemesByUserId = async (
@@ -73,7 +103,10 @@ function safeJsonParse(value: any) {
 }
 
 export const getPublicThemes = async (): Promise<SavedTheme[]> => {
-  const results = await db.select().from(ThemesTable)
+  const results = await db
+    .select()
+    .from(ThemesTable)
+    .where(eq(ThemesTable.public, true))
   return results.map(parseSavedTheme)
 }
 

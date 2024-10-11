@@ -55,21 +55,21 @@ export function generateThemeColors(
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * randomNumber(0.45, 0.6),
-        isDark ? bgBase + randomInteger(-5, 5) : bgBase + randomInteger(-10, 10)
+        isDark ? bgBase + randomInteger(-5, 9) : bgBase + randomInteger(-10, 10)
       ),
     BG2:
       initialColors.BG2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * randomNumber(0.45, 0.6),
-        isDark ? bgBase + randomInteger(-3, 7) : bgBase + randomInteger(-15, 7)
+        isDark ? bgBase + randomInteger(-3, 9) : bgBase + randomInteger(-15, 7)
       ),
     BG3:
       initialColors.BG3 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * randomNumber(0.45, 0.6),
-        isDark ? bgBase + randomInteger(-3, 7) : bgBase + randomInteger(-17, 5)
+        isDark ? bgBase + randomInteger(-3, 9) : bgBase + randomInteger(-17, 5)
       ),
     FG1:
       initialColors.FG1 ||
