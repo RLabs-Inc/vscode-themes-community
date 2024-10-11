@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import ThemeCard from '@/components/ThemeCard'
 import { SavedTheme } from '@/lib/types/colors'
+import ThemePreviewSmall from './ThemePreviewSmall'
 
 export function SavedThemesContent({
   initialThemes,
@@ -10,6 +11,7 @@ export function SavedThemesContent({
   initialThemes: SavedTheme[]
 }) {
   const [themes, setThemes] = useState(initialThemes)
+  const [theme, setTheme] = useState<SavedTheme>(initialThemes[0])
 
   const handleEdit = (theme: SavedTheme) => {
     // Implement theme editing logic
@@ -20,7 +22,7 @@ export function SavedThemesContent({
   }
 
   const handlePreview = (theme: SavedTheme) => {
-    // Implement theme preview logic
+    setTheme(theme)
   }
 
   const handleShare = (theme: SavedTheme) => {
@@ -28,17 +30,20 @@ export function SavedThemesContent({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {themes.map((theme) => (
-        <ThemeCard
-          key={theme.id}
-          theme={theme}
-          onEdit={handleEdit}
-          onDownload={handleDownload}
-          onPreview={handlePreview}
-          onShare={handleShare}
-        />
-      ))}
-    </div>
+    <section className="flex flex-col gap-10">
+      <ThemePreviewSmall theme={theme} />
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        {themes.map((theme) => (
+          <ThemeCard
+            key={theme.id}
+            theme={theme}
+            onEdit={handleEdit}
+            onDownload={handleDownload}
+            onPreview={handlePreview}
+            onShare={handleShare}
+          />
+        ))}
+      </div>
+    </section>
   )
 }

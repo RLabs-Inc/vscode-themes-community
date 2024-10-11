@@ -1,3 +1,5 @@
+'use client'
+
 import React, { ErrorInfo } from 'react'
 
 import ActiveColorPicker from '@/components/ActiveColorPicker'

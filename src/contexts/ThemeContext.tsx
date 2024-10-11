@@ -1,3 +1,5 @@
+'use client'
+
 import React, {
   createContext,
   useContext,
@@ -78,6 +80,8 @@ interface ThemeContextType {
   currentThemeId: number | null
   setCurrentThemeId: (id: number | null) => void
   updateCurrentTheme: (name: string) => Promise<void>
+  isOnigasmInitialized: boolean
+  setIsOnigasmInitialized: (value: boolean) => void
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -104,6 +108,7 @@ export const ThemeProvider: React.FC<{
   const generateColorsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [savedThemes, setSavedThemes] = useState<SavedTheme[]>([])
   const [currentThemeId, setCurrentThemeId] = useState<number | null>(null)
+  const [isOnigasmInitialized, setIsOnigasmInitialized] = useState(false)
 
   const loadSavedThemes = useCallback(async () => {
     if (userId) {
@@ -431,6 +436,8 @@ export const ThemeProvider: React.FC<{
     currentThemeId,
     setCurrentThemeId,
     updateCurrentTheme,
+    isOnigasmInitialized,
+    setIsOnigasmInitialized,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

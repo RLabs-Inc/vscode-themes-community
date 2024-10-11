@@ -26,6 +26,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
         backgroundColor: theme.uiColors.BG1,
       }}
       className="rounded-lg shadow-md overflow-hidden"
+      onClick={() => onPreview(theme)}
     >
       <div className="h-8 flex">
         {/* <div

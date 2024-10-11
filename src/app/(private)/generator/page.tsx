@@ -1,26 +1,12 @@
-'use client'
-
-import { useUser } from '@clerk/nextjs'
-import { ThemeProvider } from '@/contexts/ThemeContext'
 import { ThemeGenerator } from '@/components/ThemeGenerator'
-import Navigation from '@/components/Navigation'
+import { auth } from '@clerk/nextjs/server'
 
-export default function GeneratorPage() {
-  const { isLoaded, isSignedIn, user } = useUser()
-
-  if (!isLoaded) {
-    return <div>Loading...</div>
-  }
-
-  if (!isSignedIn) {
-    return <div>Please sign in to access the theme generator.</div>
-  }
+export default async function GeneratorPage() {
+  const { userId } = auth()
 
   return (
-    <ThemeProvider userId={user.id}>
-      <div>
-        <ThemeGenerator />
-      </div>
-    </ThemeProvider>
+    <main>
+      <ThemeGenerator />
+    </main>
   )
 }

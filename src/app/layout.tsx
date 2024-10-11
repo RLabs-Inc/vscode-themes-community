@@ -4,15 +4,11 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 
 import { ThemeProvider } from 'next-themes'
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 import { dark } from '@clerk/themes'
 import Navigation from '@/components/Navigation'
+import { ThemeProvider as ThemeProviderContext } from '@/contexts/ThemeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { userId } = auth()
   return (
     <ClerkProvider
       appearance={{
@@ -41,8 +38,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navigation />
-            {children}
+            <ThemeProviderContext userId={userId ?? undefined}>
+              <Navigation />
+              {children}
+            </ThemeProviderContext>
           </ThemeProvider>
         </body>
       </html>

@@ -24,8 +24,8 @@ export function generateThemeColors(
 
   const schemeHues = generateSchemeColors(baseHue, scheme)
 
-  const bgBase = isDark ? randomInteger(0, 25) : randomInteger(85, 100)
-  const fgBase = isDark ? randomInteger(75, 100) : randomInteger(0, 10)
+  const bgBase = isDark ? randomInteger(0, 5) : randomInteger(90, 100)
+  const fgBase = isDark ? randomInteger(80, 100) : randomInteger(0, 15)
 
   const generateColor = (
     hue: number,
@@ -54,22 +54,22 @@ export function generateThemeColors(
       initialColors.BG1 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0.45, 0.8),
-        isDark ? bgBase + randomInteger(0, 5) : bgBase - randomInteger(0, 2)
+        uiSaturation * randomNumber(0.45, 0.6),
+        isDark ? bgBase + randomInteger(-5, 5) : bgBase + randomInteger(-10, 10)
       ),
     BG2:
       initialColors.BG2 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0.45, 0.8),
-        isDark ? bgBase + randomInteger(0, 9) : bgBase - randomInteger(0, 5)
+        uiSaturation * randomNumber(0.45, 0.6),
+        isDark ? bgBase + randomInteger(-3, 7) : bgBase + randomInteger(-15, 7)
       ),
     BG3:
       initialColors.BG3 ||
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
-        uiSaturation * randomNumber(0.45, 0.8),
-        isDark ? bgBase + randomInteger(0, 13) : bgBase - randomInteger(0, 7)
+        uiSaturation * randomNumber(0.45, 0.6),
+        isDark ? bgBase + randomInteger(-3, 7) : bgBase + randomInteger(-17, 5)
       ),
     FG1:
       initialColors.FG1 ||
@@ -111,7 +111,7 @@ export function generateThemeColors(
       generateColor(
         schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * randomNumber(0.6, 1.25),
-        isDark ? bgBase + 10 : bgBase - 10
+        isDark ? bgBase + randomInteger(-10, 10) : bgBase + randomInteger(-5, 5)
       ),
     INFO:
       initialColors.INFO ||
@@ -226,9 +226,9 @@ export function updateThemeColorsWithSaturation(
   const updatedColors: UIColors = { ...currentColors }
 
   const saturationMultipliers = {
-    BG1: 0.55,
-    BG2: 0.55,
-    BG3: 0.55,
+    BG1: 0.5,
+    BG2: 0.5,
+    BG3: 0.5,
     FG1: 1,
     FG2: 1,
     FG3: 1,

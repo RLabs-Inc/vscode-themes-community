@@ -6,9 +6,13 @@ import { MoreVertical, Edit, Download, Eye, Share2 } from 'lucide-react'
 
 type ThemeCardPublicProps = {
   theme: SavedTheme
+  onClick: React.Dispatch<React.SetStateAction<SavedTheme>>
 }
 
-const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({ theme }) => {
+const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
+  theme,
+  onClick,
+}) => {
   const handleDownload = (theme: SavedTheme) => {
     console.log('Downloading theme:', theme)
   }
@@ -27,6 +31,7 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({ theme }) => {
         backgroundColor: theme.uiColors.BG1,
       }}
       className="rounded-lg shadow-md overflow-hidden"
+      onClick={() => onClick(theme)}
     >
       <div className="h-8 flex">
         {/* <div
