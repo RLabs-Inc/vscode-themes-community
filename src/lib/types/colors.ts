@@ -295,6 +295,7 @@ export const AnsiColorsSchema = z.object({
 export const SavedThemeSchema = z.object({
   id: z.number(),
   name: z.string(),
+  public: z.boolean(),
   userId: z.string(),
   uiColors: UIColorsSchema,
   syntaxColors: SyntaxColorsSchema,

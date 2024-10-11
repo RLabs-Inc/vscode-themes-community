@@ -8,7 +8,7 @@ export default async function SavedThemesPage() {
   const themes = userId ? await getThemesByUserId(userId) : []
 
   return (
-    <main className="mx-auto px-10 py-8">
+    <main className="mx-auto container py-8">
       <h1 className="text-3xl font-bold mb-8">Your Saved Themes</h1>
       <SavedThemesContent initialThemes={themes} />
     </main>

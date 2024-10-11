@@ -28,15 +28,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
       className="rounded-lg shadow-md overflow-hidden"
       onClick={() => onPreview(theme)}
     >
-      <div className="h-8 flex">
-        {/* <div
-          className="flex-1"
-          style={{ backgroundColor: theme.uiColors.BG1 }}
-        />
-        <div
-          className="flex-1"
-          style={{ backgroundColor: theme.uiColors.FG1 }}
-        /> */}
+      <div className="h-1 flex">
         <div
           className="flex-1"
           style={{ backgroundColor: theme.uiColors.AC1 }}
@@ -63,7 +55,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
         />
       </div>
       <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center">
           <h3
             style={{ color: theme.uiColors.FG1 }}
             className="text-lg font-semibold"
@@ -75,9 +67,6 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
           </Button>
         </div>
         <div className="flex space-x-2">
-          <Button variant="default" size="sm" className="flex-1">
-            Featured
-          </Button>
           <Button variant="outline" size="sm" className="flex-1">
             Public
           </Button>

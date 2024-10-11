@@ -130,6 +130,7 @@ export const ThemeProvider: React.FC<{
       const themeToSave: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'> = {
         name,
         userId,
+        public: false,
         uiColors: colors,
         syntaxColors: syntaxColors,
         ansiColors: ansiColors,

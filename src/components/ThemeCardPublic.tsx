@@ -33,15 +33,7 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
       className="rounded-lg shadow-md overflow-hidden"
       onClick={() => onClick(theme)}
     >
-      <div className="h-8 flex">
-        {/* <div
-          className="flex-1"
-          style={{ backgroundColor: theme.uiColors.BG1 }}
-        />
-        <div
-          className="flex-1"
-          style={{ backgroundColor: theme.uiColors.FG1 }}
-        /> */}
+      <div className="h-1 flex">
         <div
           className="flex-1"
           style={{ backgroundColor: theme.uiColors.AC1 }}
@@ -75,19 +67,9 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
           >
             {theme.name}
           </h3>
-          <Button variant="ghost" size="icon">
-            <MoreVertical className="h-4 w-4" />
-          </Button>
         </div>
-        <div className="flex space-x-2">
-          <Button variant="default" size="sm" className="flex-1">
-            Featured
-          </Button>
-          <Button variant="outline" size="sm" className="flex-1">
-            Public
-          </Button>
-        </div>
-        <div className="mt-4 flex space-x-2">
+
+        <div className="mt-2 flex justify-end gap-2">
           <Button
             variant="outline"
             size="icon"

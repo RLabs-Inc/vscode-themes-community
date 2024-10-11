@@ -34,6 +34,7 @@ export const ThemesTable = pgTable(
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     userId: text('user_id').notNull(),
+    public: boolean('public').notNull().default(false),
     uiColors: json('ui_colors').notNull(),
     syntaxColors: json('syntax_colors').notNull(),
     ansiColors: json('ansi_colors').notNull(),

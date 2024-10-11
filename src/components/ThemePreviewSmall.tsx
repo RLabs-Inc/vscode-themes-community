@@ -3,9 +3,9 @@ import EditorSmall from './EditorSmall'
 
 export default function ThemePreviewSmall({ theme }: { theme: SavedTheme }) {
   return (
-    <section>
+    <section className="">
       <div
-        className="flex flex-col py-2 m-auto w-1/2 rounded-md"
+        className="flex flex-col py-2 m-auto w-full lg:w-1/2 rounded-md"
         style={{ backgroundColor: theme.uiColors.BG1 }}
       >
         <div className="flex h-1 w-full self-center">
@@ -46,30 +46,27 @@ export default function ThemePreviewSmall({ theme }: { theme: SavedTheme }) {
           ></div>
         </div>
         <div
-          className="flex gap-5 w-full m-auto items-stretch "
+          className="flex gap-3 w-full m-auto items-stretch "
           style={{ backgroundColor: theme.uiColors.BG1 }}
         >
           <div
-            className="pl-2 py-2 w-1/3 flex flex-col gap-3 items-center justify-between"
+            className="pl-2 py-2 w-1/3 flex flex-col gap-3 items-end justify-center"
             style={{ backgroundColor: theme.uiColors.BG1 }}
           >
-            <div className="h-1/3"></div>
-            <div className=" flex-1 flex flex-col">
-              <h2
-                className="text-2xl font-bold"
-                style={{ color: theme.uiColors.AC1 }}
-              >
-                {theme.name}
-              </h2>
+            <h2
+              className="text-2xl font-bold "
+              style={{ color: theme.uiColors.AC1 }}
+            >
+              {theme.name}
+            </h2>
 
-              <h3 className="text-sm" style={{ color: theme.uiColors.FG1 }}>
-                {theme.updatedAt.toDateString()}
-              </h3>
-            </div>
+            <h3 className="text-sm" style={{ color: theme.uiColors.FG1 }}>
+              {theme.updatedAt.toDateString()}
+            </h3>
           </div>
 
           <div
-            className="h-[300px] w-2/3 flex-1 pr-5 py-5 rounded-md"
+            className="h-[200px] w-2/3 flex-1 pr-5 py-5 rounded-md"
             style={{ backgroundColor: theme.uiColors.BG1 }}
           >
             <EditorSmall theme={theme} selectedFile="typescript.tsx" />
