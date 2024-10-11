@@ -24,11 +24,10 @@ import {
 } from '@/lib/types/colors'
 import {
   saveTheme,
-  getThemeById,
   getThemesByUserId,
   deleteTheme,
-  updateTheme as updateThemeInDb,
-  updateThemePublicityInDb,
+  updateTheme,
+  updateThemePublicity,
 } from '@/lib/db/themes'
 import type { SavedTheme } from '@/lib/types/colors'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -74,16 +73,23 @@ interface ThemeContextType {
   schemeHues: number[]
   savedThemes: SavedTheme[]
   setSavedThemes: (themes: SavedTheme[]) => void
-  saveCurrentTheme: (name: string, userId: string) => Promise<void>
+  saveCurrentTheme: (
+    theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>
+  ) => Promise<void>
   loadTheme: (theme: SavedTheme) => void
   deleteTheme: (themeId: number) => Promise<void>
-  loadSavedThemes: () => Promise<SavedTheme[] | undefined>
+  loadSavedThemes: (userId: string) => Promise<void>
+  updateThemePublicity: (themeId: number, isPublic: boolean) => Promise<void>
   currentThemeId: number | null
   setCurrentThemeId: (id: number | null) => void
-  updateCurrentTheme: (name: string) => Promise<void>
+  updateCurrentTheme: (
+    id: number,
+    theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
+  ) => Promise<void>
   isOnigasmInitialized: boolean
   setIsOnigasmInitialized: (value: boolean) => void
-  updateThemePublicity: (themeId: number, isPublic: boolean) => Promise<void>
+  isPublic: boolean
+  setIsPublic: (value: boolean) => void
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -111,50 +117,48 @@ export const ThemeProvider: React.FC<{
   const [savedThemes, setSavedThemes] = useState<SavedTheme[]>([])
   const [currentThemeId, setCurrentThemeId] = useState<number | null>(null)
   const [isOnigasmInitialized, setIsOnigasmInitialized] = useState(false)
-  const loadSavedThemes = useCallback(async () => {
+  const [isPublic, setIsPublic] = useState(false)
+
+  const loadSavedThemes = useCallback(async (userId: string) => {
     if (userId) {
       const themes = await getThemesByUserId(userId)
       setSavedThemes(themes)
-      return themes
     }
-  }, [userId])
+  }, [])
+
+  const saveCurrentTheme = useCallback(
+    async (theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>) => {
+      const savedTheme = await saveTheme(theme)
+      setSavedThemes((prev) => [...prev, savedTheme])
+    },
+    []
+  )
+
+  const updateCurrentTheme = useCallback(
+    async (
+      id: number,
+      theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
+    ) => {
+      const updatedTheme = await updateTheme(id, theme)
+      setSavedThemes((prev) =>
+        prev.map((theme) =>
+          theme.id === updatedTheme.id
+            ? { ...theme, ...(updatedTheme as Partial<SavedTheme>) }
+            : theme
+        )
+      )
+    },
+    []
+  )
 
   useEffect(() => {
     const loadUserThemes = async () => {
-      const themes = await loadSavedThemes()
+      if (userId) {
+        await loadSavedThemes(userId)
+      }
     }
     loadUserThemes()
   }, [userId, loadSavedThemes])
-
-  const saveCurrentTheme = useCallback(
-    async (name: string, userId: string) => {
-      const themeToSave: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'> = {
-        name,
-        userId,
-        public: false,
-        uiColors: colors,
-        syntaxColors: syntaxColors,
-        ansiColors: ansiColors,
-        isDark,
-        baseHue,
-        uiSaturation,
-        syntaxSaturation,
-        scheme,
-      }
-      const savedTheme = await saveTheme(themeToSave)
-      setSavedThemes((prev) => [...prev, savedTheme])
-    },
-    [
-      colors,
-      syntaxColors,
-      ansiColors,
-      isDark,
-      baseHue,
-      uiSaturation,
-      syntaxSaturation,
-      scheme,
-    ]
-  )
 
   const loadTheme = useCallback(
     (theme: SavedTheme) => {
@@ -174,6 +178,7 @@ export const ThemeProvider: React.FC<{
             ] as ColorScheme)
       )
       setCurrentThemeId(theme.id)
+      setIsPublic(theme.public)
     },
     [setTheme]
   )
@@ -183,16 +188,23 @@ export const ThemeProvider: React.FC<{
     setSavedThemes((prev) => prev.filter((theme) => theme.id !== themeId))
   }, [])
 
-  const updateThemePublicity = useCallback(
+  const updateThemePublicityInContext = useCallback(
     async (themeId: number, isPublic: boolean) => {
-      const updatedTheme = await updateThemePublicityInDb(themeId, isPublic)
-      setSavedThemes((prev) =>
-        prev.map((theme) =>
-          theme.id === updatedTheme.id ? updatedTheme : theme
+      try {
+        await updateThemePublicity(themeId, isPublic)
+        setSavedThemes((prev) =>
+          prev.map((theme) =>
+            theme.id === themeId ? { ...theme, public: isPublic } : theme
+          )
         )
-      )
+        if (currentThemeId === themeId) {
+          setIsPublic(isPublic)
+        }
+      } catch (error) {
+        console.error('Failed to update theme publicity:', error)
+      }
     },
-    []
+    [currentThemeId]
   )
 
   const generateColors = useCallback(
@@ -379,48 +391,7 @@ export const ThemeProvider: React.FC<{
     regenerateAnsiColors()
   }, [colors.BG1, regenerateAnsiColors])
 
-  const updateCurrentTheme = useCallback(
-    async (name: string) => {
-      if (!currentThemeId || !userId) return
-
-      const themeToUpdate: Omit<
-        SavedTheme,
-        'id' | 'createdAt' | 'updatedAt' | 'public'
-      > = {
-        name,
-        userId,
-        uiColors: colors,
-        syntaxColors: syntaxColors,
-        ansiColors: ansiColors,
-        isDark,
-        baseHue,
-        uiSaturation,
-        syntaxSaturation,
-        scheme,
-      }
-
-      const updatedTheme = await updateThemeInDb(currentThemeId, themeToUpdate)
-      setSavedThemes((prev) =>
-        prev.map((theme) =>
-          theme.id === updatedTheme.id ? updatedTheme : theme
-        )
-      )
-    },
-    [
-      currentThemeId,
-      userId,
-      colors,
-      syntaxColors,
-      ansiColors,
-      isDark,
-      baseHue,
-      uiSaturation,
-      syntaxSaturation,
-      scheme,
-    ]
-  )
-
-  const value = {
+  const value: ThemeContextType = {
     isDark,
     baseHue,
     uiSaturation,
@@ -454,7 +425,9 @@ export const ThemeProvider: React.FC<{
     updateCurrentTheme,
     isOnigasmInitialized,
     setIsOnigasmInitialized,
-    updateThemePublicity,
+    updateThemePublicity: updateThemePublicityInContext,
+    isPublic,
+    setIsPublic,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

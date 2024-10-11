@@ -13,6 +13,7 @@ const ThemePreview: React.FC = () => {
     uiSaturation,
     syntaxSaturation,
     scheme,
+    isPublic,
   } = useTheme()
 
   const [selectedFile, setSelectedFile] =
@@ -117,6 +118,7 @@ const ThemePreview: React.FC = () => {
                 isDark: isDark,
                 id: 0,
                 name: 'Custom',
+                public: isPublic,
                 baseHue: baseHue,
                 uiSaturation: uiSaturation,
                 syntaxSaturation: syntaxSaturation,

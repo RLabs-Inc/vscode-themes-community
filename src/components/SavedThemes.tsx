@@ -4,14 +4,13 @@ import { useState } from 'react'
 import ThemeCard from '@/components/ThemeCard'
 import { SavedTheme } from '@/lib/types/colors'
 import ThemePreviewSmall from './ThemePreviewSmall'
-import { useThemes } from '@/hooks/useThemes'
 
 export function SavedThemesContent({
   initialThemes,
 }: {
   initialThemes: SavedTheme[]
 }) {
-  const { themes } = useThemes(initialThemes)
+  const [themes, setThemes] = useState<SavedTheme[]>(initialThemes)
   const [selectedTheme, setSelectedTheme] = useState<SavedTheme>(themes[0])
 
   const handlePreview = (theme: SavedTheme) => {

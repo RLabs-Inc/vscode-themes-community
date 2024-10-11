@@ -22,14 +22,14 @@ export async function updateThemePublicity(themeId: number, isPublic: boolean) {
   revalidatePath('/saved-themes')
 }
 
-export async function deleteThemeFromDb(themeId: number) {
+export async function deleteTheme(themeId: number) {
   await db.delete(ThemesTable).where(eq(ThemesTable.id, themeId))
   revalidatePath('/saved-themes')
 }
 
-export const saveTheme = async (
+export async function saveTheme(
   theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>
-) => {
+) {
   const result = await db
     .insert(ThemesTable)
     .values({
@@ -37,10 +37,12 @@ export const saveTheme = async (
       scheme: theme.scheme.toString(), // Convert enum to string if present
     })
     .returning()
-  return parseSavedTheme(result[0])
+  const savedTheme = parseSavedTheme(result[0])
+  revalidatePath('/saved-themes')
+  return savedTheme
 }
 
-export async function updateThemePublicityInDb(
+async function updateThemePublicityInDb(
   themeId: number,
   isPublic: boolean
 ): Promise<SavedTheme> {
@@ -53,10 +55,10 @@ export async function updateThemePublicityInDb(
   return parseSavedTheme(updatedTheme)
 }
 
-export const updateTheme = async (
+export async function updateTheme(
   id: number,
   theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
-) => {
+) {
   const updateData = {
     ...theme,
     updatedAt: new Date(),
@@ -68,12 +70,12 @@ export const updateTheme = async (
     .set(updateData)
     .where(eq(ThemesTable.id, id))
     .returning()
-  return parseSavedTheme(result[0])
+  const updatedTheme = parseSavedTheme(result[0])
+  revalidatePath('/saved-themes')
+  return updatedTheme
 }
 
-export const getThemesByUserId = async (
-  userId: string
-): Promise<SavedTheme[]> => {
+export async function getThemesByUserId(userId: string): Promise<SavedTheme[]> {
   const results = await db
     .select()
     .from(ThemesTable)
@@ -81,13 +83,21 @@ export const getThemesByUserId = async (
   return results.map(parseSavedTheme)
 }
 
-export const getThemeById = async (id: number): Promise<SavedTheme | null> => {
+export async function getThemeById(id: number): Promise<SavedTheme | null> {
   const result = await db
     .select()
     .from(ThemesTable)
     .where(eq(ThemesTable.id, id))
     .limit(1)
   return result[0] ? parseSavedTheme(result[0]) : null
+}
+
+export async function getPublicThemes(): Promise<SavedTheme[]> {
+  const results = await db
+    .select()
+    .from(ThemesTable)
+    .where(eq(ThemesTable.public, true))
+  return results.map(parseSavedTheme)
 }
 
 function safeJsonParse(value: any) {
@@ -100,14 +110,6 @@ function safeJsonParse(value: any) {
     }
   }
   return value
-}
-
-export const getPublicThemes = async (): Promise<SavedTheme[]> => {
-  const results = await db
-    .select()
-    .from(ThemesTable)
-    .where(eq(ThemesTable.public, true))
-  return results.map(parseSavedTheme)
 }
 
 function parseSavedTheme(rawTheme: any): SavedTheme {

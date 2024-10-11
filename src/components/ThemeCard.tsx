@@ -1,20 +1,17 @@
 // src/components/ThemeCard.tsx
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { SavedTheme } from '@/lib/types/colors'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
+import { Edit, Download, Eye, Share2, Trash2, Loader2 } from 'lucide-react'
 import {
-  MoreVertical,
-  Edit,
-  Download,
-  Eye,
-  Share2,
-  Trash2,
-  Loader2,
-} from 'lucide-react'
-import { useThemes } from '@/hooks/useThemes'
+  updateThemePublicity,
+  deleteTheme,
+  downloadThemeVSIX,
+} from '@/lib/db/themes'
+import { useTransition } from 'react'
 
 interface ThemeCardProps {
   theme: SavedTheme
@@ -22,39 +19,42 @@ interface ThemeCardProps {
 }
 
 const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
-  const {
-    removeTheme,
-    updateThemePublicityOptimistic,
-    downloadTheme,
-    isThemePending,
-    isThemeDownloading,
-  } = useThemes([theme])
+  const [isPublic, setIsPublic] = useState(theme.public)
+  const [isPending, startTransition] = useTransition()
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this theme?')) {
-      await removeTheme(theme.id)
+      startTransition(async () => {
+        await deleteTheme(theme.id)
+      })
     }
   }
 
-  const handlePublicityToggle = async () => {
-    await updateThemePublicityOptimistic(theme.id, !theme.public)
+  const handlePublicityToggle = (checked: boolean) => {
+    startTransition(async () => {
+      await updateThemePublicity(theme.id, checked)
+      setIsPublic(checked)
+    })
   }
 
-  const handleDownload = async () => {
-    await downloadTheme(theme.id)
+  const handleDownload = () => {
+    startTransition(async () => {
+      const vsixBuffer = await downloadThemeVSIX(theme.id)
+      if (vsixBuffer) {
+        const blob = new Blob([vsixBuffer], {
+          type: 'application/octet-stream',
+        })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${theme.name}.vsix`
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        a.remove()
+      }
+    })
   }
-
-  const handleEdit = () => {
-    // Implement edit functionality here
-    console.log('Edit theme:', theme.id)
-  }
-
-  const handleShare = () => {
-    // Implement share functionality here
-    console.log('Share theme:', theme.id)
-  }
-
-  const isPending = isThemePending(theme.id)
 
   return (
     <div
@@ -64,6 +64,8 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
         transition: 'opacity 0.2s',
       }}
       className="rounded-lg shadow-md overflow-hidden"
+      onClick={() => onPreview(theme)}
+      aria-disabled={isPending}
     >
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
@@ -75,8 +77,8 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
           </h3>
           <div className="flex items-center space-x-2">
             <Switch
-              checked={theme.public}
-              onCheckedChange={handlePublicityToggle}
+              checked={isPublic}
+              onCheckedChange={(checked) => handlePublicityToggle(checked)}
               disabled={isPending}
             />
             <span style={{ color: theme.uiColors.FG2 }}>
@@ -88,7 +90,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
           <Button
             variant="default"
             className="flex-1"
-            onClick={handleEdit}
+            // onClick={handleEdit}
             disabled={isPending}
           >
             <Edit className="h-4 w-4 mr-2" /> Edit
@@ -97,9 +99,9 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
             variant="outline"
             size="icon"
             onClick={handleDownload}
-            disabled={isPending || isThemeDownloading(theme.id)}
+            disabled={isPending}
           >
-            {isThemeDownloading(theme.id) ? (
+            {isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <Download className="h-4 w-4" />
@@ -116,7 +118,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, onPreview }) => {
           <Button
             variant="outline"
             size="icon"
-            onClick={handleShare}
+            onClick={() => {}} // Implement share functionality here
             disabled={isPending}
           >
             <Share2 className="h-4 w-4" />
