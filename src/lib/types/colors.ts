@@ -297,7 +297,7 @@ export const SavedThemeSchema = z.object({
   name: z.string(),
   public: z.boolean(),
   userId: z.string(),
-  userName: z.optional(z.string()),
+  userName: z.string(),
   uiColors: UIColorsSchema,
   syntaxColors: SyntaxColorsSchema,
   ansiColors: AnsiColorsSchema,

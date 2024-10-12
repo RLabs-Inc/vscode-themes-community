@@ -126,6 +126,7 @@ const ThemePreview: React.FC = () => {
                 syntaxColors: syntaxColors,
                 ansiColors: ansiColors,
                 userId: '',
+                userName: '',
                 createdAt: new Date(),
                 updatedAt: new Date(),
               }}
