@@ -2,13 +2,22 @@ import React, { useState, useTransition, useEffect } from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
 import { Input } from '@/components/ui/input'
 import { ActionButton } from '@/components/ActionButton'
-import { useUser } from '@clerk/nextjs'
 import { Switch } from '@/components/ui/switch'
+import { useUser } from '@clerk/nextjs'
 
-const ThemeSaver: React.FC = () => {
+interface ThemeSaverProps {
+  themeName: string
+  setThemeName: React.Dispatch<React.SetStateAction<string>>
+}
+
+const ThemeSaver: React.FC<ThemeSaverProps> = ({
+  themeName,
+  setThemeName,
+}: ThemeSaverProps) => {
   const {
     saveCurrentTheme,
     updateCurrentTheme,
+    updateSelectedThemeType,
     currentThemeId,
     savedThemes,
     isPublic,
@@ -22,25 +31,18 @@ const ThemeSaver: React.FC = () => {
     syntaxSaturation,
     scheme,
   } = useTheme()
-  const [themeName, setThemeName] = useState('')
-  const { user } = useUser()
 
+  const { user } = useUser()
   const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
-    if (currentThemeId) {
-      const currentTheme = savedThemes.find(
-        (theme) => theme.id === currentThemeId
-      )
-      if (currentTheme) {
-        setThemeName(currentTheme.name)
-        setIsPublic(currentTheme.public)
+  const handlePublicToggle = (checked: boolean) => {
+    startTransition(async () => {
+      if (currentThemeId) {
+        await updateSelectedThemeType(currentThemeId, checked)
       }
-    } else {
-      setThemeName('')
-      setIsPublic(false)
-    }
-  }, [currentThemeId, savedThemes, setIsPublic])
+      setIsPublic(checked)
+    })
+  }
 
   const handleSave = () => {
     if (!user) return
@@ -58,6 +60,7 @@ const ThemeSaver: React.FC = () => {
           uiSaturation: uiSaturation,
           syntaxSaturation: syntaxSaturation,
           scheme: scheme,
+          userName: user.firstName + ' ' + user.lastName,
         })
       } else {
         await saveCurrentTheme({
@@ -72,6 +75,7 @@ const ThemeSaver: React.FC = () => {
           uiSaturation: uiSaturation,
           syntaxSaturation: syntaxSaturation,
           scheme: scheme,
+          userName: user.firstName + ' ' + user.lastName,
         })
       }
     })
@@ -97,7 +101,7 @@ const ThemeSaver: React.FC = () => {
       <div className="flex items-center gap-2">
         <Switch
           checked={isPublic}
-          onCheckedChange={setIsPublic}
+          onCheckedChange={(checked) => handlePublicToggle(checked)}
           id="public-switch"
         />
         <label htmlFor="public-switch">Make theme public</label>

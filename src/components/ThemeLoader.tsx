@@ -9,7 +9,13 @@ import {
 } from '@/components/ui/select'
 import { Loader2 } from 'lucide-react'
 
-const ThemeLoader: React.FC = () => {
+interface ThemeLoaderProps {
+  setThemeName: React.Dispatch<React.SetStateAction<string>>
+}
+
+export const ThemeLoader: React.FC<ThemeLoaderProps> = ({
+  setThemeName,
+}: ThemeLoaderProps) => {
   const { savedThemes, loadTheme, currentThemeId } = useTheme()
   const [selectedThemeId, setSelectedThemeId] = useState<string>(
     currentThemeId?.toString() || ''
@@ -30,6 +36,7 @@ const ThemeLoader: React.FC = () => {
       )
       if (themeToLoad) {
         loadTheme(themeToLoad)
+        setThemeName(themeToLoad.name)
       }
     })
   }
@@ -66,5 +73,3 @@ const ThemeLoader: React.FC = () => {
     </div>
   )
 }
-
-export default ThemeLoader

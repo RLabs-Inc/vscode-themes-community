@@ -41,9 +41,9 @@ export const ThemeGenerator = () => {
   return (
     <section>
       <div className="mx-auto p-4 flex flex-col gap-5">
-        <div className="flex flex-wrap lg:flex-nowrap gap-8">
+        <div className="flex flex-wrap lg:flex-nowrap gap-6">
           <div className="flex flex-col items-center justify-between flex-shrink">
-            <div className="flex flex-col items-center flex-1 gap-5">
+            <div className="flex flex-col items-center flex-1 gap-6">
               <ThemeControls />
               <div className="">
                 <ActiveColorPicker />
@@ -53,7 +53,7 @@ export const ThemeGenerator = () => {
           <div className="flex-1">
             <ThemePreview />
           </div>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             <ColorList title="Theme Colors" isThemeColors={true} />
             <AnsiColorList />
           </div>
@@ -62,10 +62,10 @@ export const ThemeGenerator = () => {
           <SyntaxColorList title="Syntax Colors" isThemeColors={false} />
         </div>
 
-        <div className="flex justify-end gap-4">
+        {/* <div className="flex justify-end gap-6">
           <ExportButton />
           <ExportSemanticButton />
-        </div>
+        </div> */}
       </div>
     </section>
   )

@@ -20,14 +20,12 @@ const ThemePreview: React.FC = () => {
     useState<CodeSnippetKey>('typescript.tsx')
 
   return (
-    <section>
+    <section className="">
       <div
         style={{
-          height: '800px',
-          display: 'flex',
-          flexDirection: 'column',
           border: `1px solid ${colors.BORDER}`,
         }}
+        className="h-[800px] flex flex-col rounded-md"
       >
         {/* Mock VS Code title bar */}
         <div
@@ -37,6 +35,7 @@ const ThemePreview: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
           }}
+          className="rounded-t-md"
         >
           <span style={{ color: colors.FG1 }} className="text-xs">
             VS Code Theme Preview
@@ -143,7 +142,7 @@ const ThemePreview: React.FC = () => {
             display: 'flex',
             justifyContent: 'space-between',
           }}
-          className="text-xs"
+          className="text-xs rounded-b-md"
         >
           <span style={{ color: colors.FG3 }}>
             {selectedFile.split('.').pop()?.toUpperCase()}

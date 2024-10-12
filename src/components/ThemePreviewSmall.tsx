@@ -50,7 +50,7 @@ export default function ThemePreviewSmall({ theme }: { theme: SavedTheme }) {
           style={{ backgroundColor: theme.uiColors.BG1 }}
         >
           <div
-            className="pl-2 py-2 w-1/3 flex flex-col gap-3 items-end justify-center"
+            className="pl-2 py-2 w-1/3 flex flex-col  items-end justify-center"
             style={{ backgroundColor: theme.uiColors.BG1 }}
           >
             <h2
@@ -59,8 +59,14 @@ export default function ThemePreviewSmall({ theme }: { theme: SavedTheme }) {
             >
               {theme.name}
             </h2>
+            <h3
+              className="text-base font-semibold"
+              style={{ color: theme.uiColors.FG2 }}
+            >
+              {theme.userName}
+            </h3>
 
-            <h3 className="text-sm" style={{ color: theme.uiColors.FG1 }}>
+            <h3 className="text-sm text-muted-foreground">
               {theme.updatedAt.toDateString()}
             </h3>
           </div>

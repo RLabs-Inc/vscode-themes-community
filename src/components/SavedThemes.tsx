@@ -17,12 +17,21 @@ export function SavedThemesContent({
     setSelectedTheme(theme)
   }
 
+  const handleDelete = (themeId: number) => {
+    setThemes((themes) => themes.filter((theme) => theme.id !== themeId))
+  }
+
   return (
     <section className="flex flex-col gap-10">
       <ThemePreviewSmall theme={selectedTheme} />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {themes.map((theme) => (
-          <ThemeCard key={theme.id} theme={theme} onPreview={handlePreview} />
+          <ThemeCard
+            key={theme.id}
+            theme={theme}
+            onPreview={handlePreview}
+            onDelete={handleDelete}
+          />
         ))}
       </div>
     </section>

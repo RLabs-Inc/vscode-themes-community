@@ -5,7 +5,6 @@ import { getPublicThemes } from '@/lib/db/themes'
 
 export default async function DiscoverPage() {
   const themes = await getPublicThemes()
-
   return (
     <div>
       <main className="mx-auto container">

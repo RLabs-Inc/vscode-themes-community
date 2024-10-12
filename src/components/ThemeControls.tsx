@@ -25,16 +25,20 @@ import ThemeSaver from './ThemeSaver'
 
 import { ColorScheme } from '@/lib/types/colors'
 import { randomInteger } from '@/lib/utils/math'
-import ThemeLoader from './ThemeLoader'
+import { ThemeLoader } from './ThemeLoader'
 
 const ThemeControls: React.FC = () => {
+  const [themeName, setThemeName] = useState<string>('')
+
   const {
     isDark,
+    isPublic,
     baseHue,
     scheme,
     uiSaturation,
     syntaxSaturation,
     lockedColors,
+    setIsPublic,
     setBaseHue,
     setUiSaturation,
     setSyntaxSaturation,
@@ -65,6 +69,8 @@ const ThemeControls: React.FC = () => {
     setSyntaxSaturation(newSyntaxSaturation)
     setScheme(newScheme)
     setCurrentThemeId(null)
+    setThemeName('')
+    setIsPublic(false)
 
     // Then generate colors with these new values
     generateColors({
@@ -351,7 +357,7 @@ const ThemeControls: React.FC = () => {
         <div className="flex flex-col justify-between gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <ThemeLoader />
+              <ThemeLoader setThemeName={setThemeName} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Load a theme from your saved themes</p>
@@ -359,7 +365,7 @@ const ThemeControls: React.FC = () => {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <ThemeSaver />
+              <ThemeSaver themeName={themeName} setThemeName={setThemeName} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Save the current theme to your themes</p>

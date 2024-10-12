@@ -3,28 +3,34 @@
 import { revalidatePath } from 'next/cache'
 import { ColorScheme, type SavedTheme, SavedThemeSchema } from '../types/colors'
 import { db } from '../drizzle/db'
-import { ThemesTable } from '../drizzle/schema'
+import { ThemesTable, UsersTable } from '../drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { generateVSIX } from '@/lib/generator/exportVSIX'
 
-export async function downloadThemeVSIX(
-  themeId: number
-): Promise<Buffer | null> {
-  const theme = await getThemeById(themeId)
-  if (!theme) return null
+export async function getPublicThemes(): Promise<SavedTheme[]> {
+  const results = await db
+    .select()
+    .from(ThemesTable)
+    .where(eq(ThemesTable.public, true))
 
-  const vsixBuffer = await generateVSIX(theme)
-  return vsixBuffer
+  return results.map(parseSavedTheme)
 }
 
-export async function updateThemePublicity(themeId: number, isPublic: boolean) {
-  await updateThemePublicityInDb(themeId, isPublic)
-  revalidatePath('/saved-themes')
+export async function getThemesByUserId(userId: string): Promise<SavedTheme[]> {
+  const results = await db
+    .select()
+    .from(ThemesTable)
+    .where(eq(ThemesTable.userId, userId))
+  return results.map(parseSavedTheme)
 }
 
-export async function deleteTheme(themeId: number) {
-  await db.delete(ThemesTable).where(eq(ThemesTable.id, themeId))
-  revalidatePath('/saved-themes')
+export async function getThemeById(id: number): Promise<SavedTheme | null> {
+  const result = await db
+    .select()
+    .from(ThemesTable)
+    .where(eq(ThemesTable.id, id))
+    .limit(1)
+  return result[0] ? parseSavedTheme(result[0]) : null
 }
 
 export async function saveTheme(
@@ -42,7 +48,7 @@ export async function saveTheme(
   return savedTheme
 }
 
-async function updateThemePublicityInDb(
+export async function updateThemeType(
   themeId: number,
   isPublic: boolean
 ): Promise<SavedTheme> {
@@ -51,7 +57,7 @@ async function updateThemePublicityInDb(
     .set({ public: isPublic })
     .where(eq(ThemesTable.id, themeId))
     .returning()
-
+  revalidatePath('/saved-themes')
   return parseSavedTheme(updatedTheme)
 }
 
@@ -75,41 +81,19 @@ export async function updateTheme(
   return updatedTheme
 }
 
-export async function getThemesByUserId(userId: string): Promise<SavedTheme[]> {
-  const results = await db
-    .select()
-    .from(ThemesTable)
-    .where(eq(ThemesTable.userId, userId))
-  return results.map(parseSavedTheme)
+export async function deleteTheme(themeId: number) {
+  await db.delete(ThemesTable).where(eq(ThemesTable.id, themeId))
+  revalidatePath('/saved-themes')
 }
 
-export async function getThemeById(id: number): Promise<SavedTheme | null> {
-  const result = await db
-    .select()
-    .from(ThemesTable)
-    .where(eq(ThemesTable.id, id))
-    .limit(1)
-  return result[0] ? parseSavedTheme(result[0]) : null
-}
+export async function downloadThemeVSIX(
+  themeId: number
+): Promise<Buffer | null> {
+  const theme = await getThemeById(themeId)
+  if (!theme) return null
 
-export async function getPublicThemes(): Promise<SavedTheme[]> {
-  const results = await db
-    .select()
-    .from(ThemesTable)
-    .where(eq(ThemesTable.public, true))
-  return results.map(parseSavedTheme)
-}
-
-function safeJsonParse(value: any) {
-  if (typeof value === 'string') {
-    try {
-      return JSON.parse(value)
-    } catch (error) {
-      console.error('Error parsing JSON:', error)
-      return value
-    }
-  }
-  return value
+  const vsixBuffer = await generateVSIX(theme)
+  return vsixBuffer
 }
 
 function parseSavedTheme(rawTheme: any): SavedTheme {
@@ -133,4 +117,16 @@ function parseSavedTheme(rawTheme: any): SavedTheme {
     console.log('Parsed theme data:', parsedTheme)
     throw error
   }
+}
+
+function safeJsonParse(value: any) {
+  if (typeof value === 'string') {
+    try {
+      return JSON.parse(value)
+    } catch (error) {
+      console.error('Error parsing JSON:', error)
+      return value
+    }
+  }
+  return value
 }

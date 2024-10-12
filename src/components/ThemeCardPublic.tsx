@@ -6,6 +6,7 @@ import { SavedTheme } from '@/lib/types/colors'
 import { Download, Eye, Share2, Loader2 } from 'lucide-react'
 import { downloadThemeVSIX } from '@/lib/db/themes'
 import { useTransition } from 'react'
+import { useUser } from '@clerk/nextjs'
 
 type ThemeCardPublicProps = {
   theme: SavedTheme
@@ -16,6 +17,7 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
   theme,
   onClick,
 }) => {
+  const { user } = useUser()
   const [isPending, startTransition] = useTransition()
 
   const handleDownload = () => {
@@ -41,7 +43,6 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
     <div
       style={{ backgroundColor: theme.uiColors.BG1 }}
       className="rounded-lg shadow-md overflow-hidden"
-      onClick={() => onClick(theme)}
     >
       <div className="h-1 flex">
         <div
@@ -76,6 +77,9 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
         >
           {theme.name}
         </h3>
+        <h3 style={{ color: theme.uiColors.FG2 }} className="text-sm">
+          {theme.userName}
+        </h3>
         <div className="mt-2 flex justify-end gap-2">
           <Button
             variant="outline"
@@ -89,7 +93,7 @@ const ThemeCardPublic: React.FC<ThemeCardPublicProps> = ({
               <Download className="h-4 w-4" />
             )}
           </Button>
-          <Button variant="outline" size="icon" onClick={() => {}}>
+          <Button variant="outline" size="icon" onClick={() => onClick(theme)}>
             <Eye className="h-4 w-4" />
           </Button>
           <Button variant="outline" size="icon" onClick={() => {}}>
