@@ -12,6 +12,7 @@ import {
   downloadThemeVSIX,
 } from '@/lib/db/themes'
 import { useTheme } from '@/contexts/ThemeContext'
+import { useRouter } from 'next/navigation'
 
 interface ThemeCardProps {
   theme: SavedTheme
@@ -24,11 +25,23 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
   onPreview,
   onDelete,
 }) => {
-  const { updateSelectedThemeType, deleteSavedTheme } = useTheme()
+  const router = useRouter()
+  const {
+    updateSelectedThemeType,
+    deleteSavedTheme,
+    setCurrentThemeId,
+    loadTheme,
+    savedThemes,
+  } = useTheme()
   const [isPublic, setIsPublic] = useState(theme.public)
   const [isDelPending, startDelTransition] = useTransition()
   const [isDownPending, startDownTransition] = useTransition()
   const [isPublPending, startPublTransition] = useTransition()
+
+  const handleEdit = () => {
+    setCurrentThemeId(theme.id)
+    router.push('/generator')
+  }
 
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this theme?')) {
@@ -155,7 +168,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
             <Button
               variant="default"
               className="flex-1"
-              // onClick={handleEdit}
+              onClick={handleEdit}
               // disabled={}
             >
               <Edit className="h-4 w-4 mr-2" /> Edit

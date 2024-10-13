@@ -48,10 +48,6 @@ const ThemeControls: React.FC = () => {
     setCurrentThemeId,
   } = useTheme()
 
-  useEffect(() => {
-    handleRandomize()
-  }, [])
-
   const handleRandomize = (few = false) => {
     const newBaseHue = Math.floor(Math.random() * 360)
     const newUiSaturation = randomInteger(15, 65)

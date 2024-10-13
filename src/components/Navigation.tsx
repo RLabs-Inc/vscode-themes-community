@@ -10,7 +10,7 @@ import { Button } from './ui/button'
 
 const Navigation = () => {
   return (
-    <nav className="bg-background text-foreground p-4">
+    <nav className="bg-background text-foreground p-4 sticky top-0 z-50 shadow-b-xl border-b border-border">
       <div className="mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
           VSCode Themes Community

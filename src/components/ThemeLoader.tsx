@@ -1,4 +1,4 @@
-import React, { useState, useTransition, useEffect } from 'react'
+import React, { useState, useTransition, useEffect, useCallback } from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
 import {
   Select,
@@ -22,24 +22,30 @@ export const ThemeLoader: React.FC<ThemeLoaderProps> = ({
   )
   const [isPending, startTransition] = useTransition()
 
+  const handleLoad = useCallback(
+    (value: string) => {
+      if (value === '') return
+      startTransition(async () => {
+        const themeToLoad = savedThemes.find(
+          (theme) => theme.id.toString() === value
+        )
+        if (themeToLoad) {
+          loadTheme(themeToLoad)
+          setThemeName(themeToLoad.name)
+        }
+      })
+    },
+    [loadTheme, savedThemes, setThemeName]
+  )
+
   useEffect(() => {
     if (currentThemeId === null) {
       setSelectedThemeId('')
+    } else {
+      setSelectedThemeId(currentThemeId.toString())
+      handleLoad(currentThemeId.toString())
     }
-  }, [currentThemeId])
-
-  const handleLoad = (value: string) => {
-    if (value === '') return
-    startTransition(async () => {
-      const themeToLoad = savedThemes.find(
-        (theme) => theme.id.toString() === value
-      )
-      if (themeToLoad) {
-        loadTheme(themeToLoad)
-        setThemeName(themeToLoad.name)
-      }
-    })
-  }
+  }, [currentThemeId, handleLoad])
 
   return (
     <div className="flex gap-4">
@@ -64,12 +70,6 @@ export const ThemeLoader: React.FC<ThemeLoaderProps> = ({
           </SelectContent>
         </Select>
       </div>
-      {/* <ActionButton
-        label="Load"
-        onClick={handleLoad}
-        pending={isPending}
-        disabled={!selectedThemeId}
-      /> */}
     </div>
   )
 }

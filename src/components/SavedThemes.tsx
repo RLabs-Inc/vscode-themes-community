@@ -23,8 +23,10 @@ export function SavedThemesContent({
 
   return (
     <section className="flex flex-col gap-10">
-      <ThemePreviewSmall theme={selectedTheme} />
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="sticky top-[3.5rem] py-5 z-20 bg-background/70 shadow-sm backdrop-blur backdrop w-full">
+        <ThemePreviewSmall theme={selectedTheme} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16">
         {themes.map((theme) => (
           <ThemeCard
             key={theme.id}
