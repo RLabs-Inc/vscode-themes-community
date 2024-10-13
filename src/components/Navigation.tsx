@@ -17,8 +17,8 @@ const Navigation = () => {
         </Link>
         <div className="flex gap-4 items-center ">
           <Link href="/discover">Discover</Link>
+          <Link href="/generator">Create</Link>
           <SignedIn>
-            <Link href="/generator">Create</Link>
             <Link href="/saved-themes">Your Themes</Link>
             <UserButton />
           </SignedIn>

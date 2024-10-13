@@ -5,7 +5,7 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode
 }) {
-  auth().protect()
+  // auth().protect()
 
   return <section>{children}</section>
 }

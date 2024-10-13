@@ -7,6 +7,8 @@ export default async function SavedThemesPage() {
   const { userId } = auth()
   const themes = userId ? await getThemesByUserId(userId) : []
 
+  auth().protect()
+
   return (
     <main className="mx-auto p-20">
       {themes.length === 0 ? (

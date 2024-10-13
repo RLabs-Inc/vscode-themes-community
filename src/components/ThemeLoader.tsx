@@ -47,6 +47,8 @@ export const ThemeLoader: React.FC<ThemeLoaderProps> = ({
     }
   }, [currentThemeId, handleLoad])
 
+  if (savedThemes.length === 0) return null
+
   return (
     <div className="flex gap-4">
       <div className="flex-1">

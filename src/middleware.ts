@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 // Define routes that should be protected
 const isProtectedRoute = createRouteMatcher([
-  '/generator(.*)',
+  // '/generator(.*)',
   '/saved-themes(.*)',
 ]) // Protect generator and its subroutes
 

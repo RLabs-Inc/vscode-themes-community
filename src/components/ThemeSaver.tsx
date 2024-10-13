@@ -61,8 +61,10 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
   }
 
   const handleSave = () => {
-    if (!user) return
-
+    if (!user) {
+      alert('You must be logged in to save and/or download created themes.')
+      return
+    }
     startTransition(async () => {
       if (currentThemeId) {
         // Handle update case
@@ -147,6 +149,7 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
           checked={isPublic}
           onCheckedChange={(checked) => handlePublicToggle(checked)}
           id="public-switch"
+          disabled={!user}
         />
         <label htmlFor="public-switch">Make theme public</label>
       </div>
