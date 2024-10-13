@@ -26,8 +26,10 @@ import ThemeSaver from './ThemeSaver'
 import { ColorScheme } from '@/lib/types/colors'
 import { randomInteger } from '@/lib/utils/math'
 import { ThemeLoader } from './ThemeLoader'
+import { useUser } from '@clerk/nextjs'
 
 const ThemeControls: React.FC = () => {
+  const { user } = useUser()
   const [themeName, setThemeName] = useState<string>('')
 
   const {
@@ -131,6 +133,11 @@ const ThemeControls: React.FC = () => {
   return (
     <section className="flex flex-col gap-5 w-full">
       <h2 className="text-xl font-semibold">Theme Controls</h2>
+      {!user && (
+        <p className="text-xs text-muted-foreground">
+          You must be logged in to save and/or download created themes.
+        </p>
+      )}
       <TooltipProvider>
         <div className="flex gap-5">
           <div className="flex flex-1 items-end gap-4">
