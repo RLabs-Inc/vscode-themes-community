@@ -13,7 +13,7 @@ export default async function SavedThemesPage() {
         <div className="text-center py-8">
           <h2 className="text-2xl font-semibold mb-4">No Saved Themes</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            You haven't saved any themes yet. Create and save a theme to see it
+            You have not saved any themes yet. Create and save a theme to see it
             here!
           </p>
         </div>
