@@ -20,7 +20,6 @@ const Navigation = () => {
           <SignedIn>
             <Link href="/generator">Create</Link>
             <Link href="/saved-themes">Your Themes</Link>
-            <Link href="/profile">Profile</Link>
             <UserButton />
           </SignedIn>
           <SignedOut>

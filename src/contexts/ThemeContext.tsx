@@ -80,7 +80,7 @@ interface ThemeContextType {
 
   saveCurrentTheme: (
     theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>
-  ) => Promise<void>
+  ) => Promise<{ success: boolean; theme?: SavedTheme; error?: string }>
   loadTheme: (theme: SavedTheme) => void
   deleteSavedTheme: (themeId: number) => Promise<void>
 
@@ -89,7 +89,7 @@ interface ThemeContextType {
   updateCurrentTheme: (
     id: number,
     theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
-  ) => Promise<void>
+  ) => Promise<{ success: boolean; theme?: SavedTheme; error?: string }>
 
   updateSelectedThemeType: (themeId: number, isPublic: boolean) => Promise<void>
 
@@ -133,25 +133,28 @@ export const ThemeProvider: React.FC<{
 
   const saveCurrentTheme = useCallback(
     async (theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>) => {
-      const savedTheme = await saveTheme(theme)
-      setSavedThemes((prev) => [...prev, savedTheme])
-      setCurrentThemeId(savedTheme.id)
+      const result = await saveTheme(theme)
+      if (result.success && result.theme) {
+        setSavedThemes((prev) => [...prev, result.theme])
+        setCurrentThemeId(result.theme.id)
+      }
+      return result
     },
     []
   )
+
   const updateCurrentTheme = useCallback(
     async (
       id: number,
       theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
     ) => {
-      const updatedTheme = await updateTheme(id, theme)
-      setSavedThemes((prev) =>
-        prev.map((theme) =>
-          theme.id === updatedTheme.id
-            ? { ...theme, ...(updatedTheme as Partial<SavedTheme>) }
-            : theme
+      const result = await updateTheme(id, theme)
+      if (result.success && result.theme) {
+        setSavedThemes((prev) =>
+          prev.map((t) => (t.id === result.theme.id ? result.theme : t))
         )
-      )
+      }
+      return result
     },
     []
   )

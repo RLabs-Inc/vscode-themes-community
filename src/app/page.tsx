@@ -1,40 +1,65 @@
-import Navigation from '@/components/Navigation'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 export default function Home() {
   return (
     <div>
-      <main className="container mx-auto mt-8 p-4">
-        <h1 className="text-4xl font-bold mb-4">
-          Welcome to VSCode Themes Community
-        </h1>
-        <p className="text-xl mb-4">
-          Generate, edit, download, share, and discover new themes for Visual
-          Studio Code.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-2">Create a Theme</h2>
-            <p>
-              Use our powerful theme generator to create your perfect VSCode
-              theme.
+      <main className="p-10">
+        <div className="flex flex-col items-center justify-between h-[calc(100vh-9rem)]">
+          <div></div>
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="text-4xl font-bold mb-4">
+              Welcome to VSCode Themes Community
+            </h1>
+            <p className="text-xl mb-4 text-muted-foreground">
+              Generate, edit, download, share, and discover new themes for
+              Visual Studio Code.
             </p>
-            <Link
-              href="/generator"
-              className="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Get Started
-            </Link>
           </div>
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-2">Discover Themes</h2>
-            <p>Browse and download themes created by the community.</p>
-            <Link
-              href="/discover"
-              className="mt-2 inline-block bg-green-500 text-white px-4 py-2 rounded"
-            >
-              Explore Themes
-            </Link>
+          <div className="flex items-stretch justify-center gap-10">
+            <Card className="flex-1">
+              <CardHeader>
+                <CardTitle>Discover Themes</CardTitle>
+                <CardDescription>
+                  Browse and download install-ready themes created by the
+                  community.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p></p>
+              </CardContent>
+              <CardFooter>
+                <Button>
+                  <Link href="/discover">Explore Themes</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+            <Card className="flex-1">
+              <CardHeader>
+                <CardTitle>Create a Theme</CardTitle>
+                <CardDescription>
+                  Create and edit your next VSCode theme in a tool with a newly
+                  designed algorithm that uses sacred geometry patterns to
+                  generate harmonized and pleasent colors to use in your theme.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p></p>
+              </CardContent>
+              <CardFooter>
+                <Button>
+                  <Link href="/generator">Get Started</Link>
+                </Button>
+              </CardFooter>
+            </Card>
           </div>
         </div>
       </main>

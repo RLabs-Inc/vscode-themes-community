@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { ActionButton } from '@/components/ActionButton'
 import { Switch } from '@/components/ui/switch'
 import { useUser } from '@clerk/nextjs'
+import { useToast } from '@/hooks/use-toast'
 
 interface ThemeSaverProps {
   themeName: string
@@ -33,6 +34,7 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
   } = useTheme()
 
   const { user } = useUser()
+  const { toast } = useToast()
   const [isPending, startTransition] = useTransition()
 
   const handlePublicToggle = (checked: boolean) => {
@@ -44,12 +46,27 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
     })
   }
 
+  const userName = () => {
+    console.log(user?.username)
+    if (user) {
+      if (user.firstName != null && user.lastName != null) {
+        return user.firstName + ' ' + user.lastName
+      } else if (user.firstName != null) {
+        return user.firstName
+      } else if (user.primaryEmailAddress?.emailAddress != null) {
+        return user.primaryEmailAddress.emailAddress.split('@')[0]
+      }
+      return 'Anonymous'
+    }
+  }
+
   const handleSave = () => {
     if (!user) return
 
     startTransition(async () => {
       if (currentThemeId) {
-        await updateCurrentTheme(currentThemeId, {
+        // Handle update case
+        const result = await updateCurrentTheme(currentThemeId, {
           name: themeName.trim(),
           public: isPublic,
           uiColors: colors,
@@ -60,10 +77,24 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
           uiSaturation: uiSaturation,
           syntaxSaturation: syntaxSaturation,
           scheme: scheme,
-          userName: user.firstName + ' ' + user.lastName,
+          userName: userName() || 'Anonymous',
         })
+        if (result.success) {
+          toast({
+            title: 'Theme updated',
+            description: 'Your theme has been successfully updated.',
+          })
+        } else {
+          toast({
+            title: 'Error',
+            description:
+              result.error || 'An error occurred while updating the theme.',
+            variant: 'destructive',
+          })
+        }
       } else {
-        await saveCurrentTheme({
+        // Handle save new theme case
+        const result = await saveCurrentTheme({
           name: themeName.trim(),
           userId: user.id,
           public: isPublic,
@@ -75,8 +106,21 @@ const ThemeSaver: React.FC<ThemeSaverProps> = ({
           uiSaturation: uiSaturation,
           syntaxSaturation: syntaxSaturation,
           scheme: scheme,
-          userName: user.firstName + ' ' + user.lastName,
+          userName: userName() || 'Anonymous',
         })
+        if (result.success) {
+          toast({
+            title: 'Theme saved',
+            description: 'Your new theme has been successfully saved.',
+          })
+        } else {
+          toast({
+            title: 'Error',
+            description:
+              result.error || 'An error occurred while saving the theme.',
+            variant: 'destructive',
+          })
+        }
       }
     })
   }

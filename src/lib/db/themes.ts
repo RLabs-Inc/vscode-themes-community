@@ -6,6 +6,7 @@ import { db } from '../drizzle/db'
 import { ThemesTable, UsersTable } from '../drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { generateVSIX } from '@/lib/generator/exportVSIX'
+import { sql } from '@vercel/postgres'
 
 export async function getPublicThemes(): Promise<SavedTheme[]> {
   const results = await db
@@ -36,16 +37,27 @@ export async function getThemeById(id: number): Promise<SavedTheme | null> {
 export async function saveTheme(
   theme: Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>
 ) {
-  const result = await db
-    .insert(ThemesTable)
-    .values({
-      ...theme,
-      scheme: theme.scheme.toString(), // Convert enum to string if present
-    })
-    .returning()
-  const savedTheme = parseSavedTheme(result[0])
-  revalidatePath('/saved-themes')
-  return savedTheme
+  try {
+    const result = await db
+      .insert(ThemesTable)
+      .values({
+        ...theme,
+        scheme: theme.scheme.toString(),
+      })
+      .returning()
+    const savedTheme = parseSavedTheme(result[0])
+    revalidatePath('/saved-themes')
+    return { success: true, theme: savedTheme }
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('name_user_id_idx')) {
+      return {
+        success: false,
+        error: 'Theme name already exists for this user',
+      }
+    }
+    console.error('Error saving theme:', error)
+    return { success: false, error: 'An unexpected error occurred' }
+  }
 }
 
 export async function updateThemeType(
@@ -65,20 +77,31 @@ export async function updateTheme(
   id: number,
   theme: Partial<Omit<SavedTheme, 'id' | 'createdAt' | 'updatedAt'>>
 ) {
-  const updateData = {
-    ...theme,
-    updatedAt: new Date(),
-    scheme: theme.scheme ? theme.scheme.toString() : undefined, // Convert enum to string if present
-  }
+  try {
+    const updateData = {
+      ...theme,
+      updatedAt: new Date(),
+      scheme: theme.scheme ? theme.scheme.toString() : undefined,
+    }
 
-  const result = await db
-    .update(ThemesTable)
-    .set(updateData)
-    .where(eq(ThemesTable.id, id))
-    .returning()
-  const updatedTheme = parseSavedTheme(result[0])
-  revalidatePath('/saved-themes')
-  return updatedTheme
+    const result = await db
+      .update(ThemesTable)
+      .set(updateData)
+      .where(eq(ThemesTable.id, id))
+      .returning()
+    const updatedTheme = parseSavedTheme(result[0])
+    revalidatePath('/saved-themes')
+    return { success: true, theme: updatedTheme }
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('name_user_id_idx')) {
+      return {
+        success: false,
+        error: 'Theme name already exists for this user',
+      }
+    }
+    console.error('Error updating theme:', error)
+    return { success: false, error: 'An unexpected error occurred' }
+  }
 }
 
 export async function deleteTheme(themeId: number) {

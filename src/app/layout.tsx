@@ -7,6 +7,8 @@ import { ThemeProvider } from 'next-themes'
 import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
 import { dark } from '@clerk/themes'
+
+import { Toaster } from '@/components/ui/toaster'
 import Navigation from '@/components/Navigation'
 import { ThemeProvider as ThemeProviderContext } from '@/contexts/ThemeContext'
 
@@ -27,7 +29,6 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         baseTheme: dark,
-        variables: { colorPrimary: '#3b82f6' }, // Customize the primary color
       }}
     >
       <html lang="en">
@@ -41,6 +42,7 @@ export default function RootLayout({
             <ThemeProviderContext userId={userId ?? undefined}>
               <Navigation />
               {children}
+              <Toaster />
             </ThemeProviderContext>
           </ThemeProvider>
         </body>

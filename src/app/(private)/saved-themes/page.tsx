@@ -9,7 +9,17 @@ export default async function SavedThemesPage() {
 
   return (
     <main className="mx-auto p-20">
-      <SavedThemesContent initialThemes={themes} />
+      {themes.length === 0 ? (
+        <div className="text-center py-8">
+          <h2 className="text-2xl font-semibold mb-4">No Saved Themes</h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            You haven't saved any themes yet. Create and save a theme to see it
+            here!
+          </p>
+        </div>
+      ) : (
+        <SavedThemesContent initialThemes={themes} />
+      )}
     </main>
   )
 }
