@@ -69,7 +69,7 @@ These patterns inform the selection and relationship between colors in the gener
 
 4. Set up environment variables:
 
-   - Copy `.env.example` to `.env.local`
+   - Copy `env.example` to `.env.local`
    - Fill in the required values
 
 5. Run the development server:
