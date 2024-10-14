@@ -7,7 +7,7 @@ export default async function DiscoverPage() {
   const themes = await getPublicThemes()
   return (
     <div>
-      <main className="mx-auto px-3 md:px-0">
+      <main className="mx-auto px-4">
         <div className="flex flex-col gap-10 items-center w-full">
           <div className="relative w-full">
             <DotPattern cr={0.3} className="absolute top-0 z-20" />
