@@ -24,7 +24,7 @@ export default function Home() {
               Visual Studio Code.
             </p>
           </div>
-          <div className="flex items-stretch justify-center gap-10">
+          <div className="flex flex-wrap md:flex-nowrap items-stretch justify-center gap-10">
             <Card className="flex-1">
               <CardHeader>
                 <CardTitle>Discover Themes</CardTitle>

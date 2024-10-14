@@ -14,7 +14,7 @@ export default function Discover({ themes }: { themes: SavedTheme[] }) {
         <ThemePreviewSmall theme={selectedTheme} />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-16 p-20">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-16 p-0 md:p-20">
         {themes.map((theme) => (
           <ThemeCardPublic
             key={theme.id}

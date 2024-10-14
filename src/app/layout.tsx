@@ -9,7 +9,7 @@ import { auth } from '@clerk/nextjs/server'
 import { dark } from '@clerk/themes'
 
 import { Toaster } from '@/components/ui/toaster'
-import Navigation from '@/components/Navigation'
+import { Navigation } from '@/components/Navigation'
 import { ThemeProvider as ThemeProviderContext } from '@/contexts/ThemeContext'
 
 import { Analytics } from '@vercel/analytics/react'

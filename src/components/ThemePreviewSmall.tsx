@@ -50,7 +50,7 @@ export default function ThemePreviewSmall({ theme }: { theme: SavedTheme }) {
           style={{ backgroundColor: theme.uiColors.BG1 }}
         >
           <div
-            className="pl-2 py-2 w-1/3 flex flex-col  items-end justify-center"
+            className="pl-2 py-2 w-1/3 flex flex-col  items-end justify-center overflow-hidden"
             style={{ backgroundColor: theme.uiColors.BG1 }}
           >
             <h2

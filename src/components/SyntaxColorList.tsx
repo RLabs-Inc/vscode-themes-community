@@ -67,7 +67,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
           Unlock All
         </Button>
       </div>
-      <div className="grid grid-rows-4 grid-flow-col auto-cols-auto gap-3 w-full">
+      <div className="grid grid-cols-1 md:grid-rows-4 md:grid-flow-col md:auto-cols-auto gap-3 w-full">
         {Object.entries(displayColors).map(([key, value]) => (
           <div
             key={key}
