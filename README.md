@@ -52,13 +52,13 @@ These patterns inform the selection and relationship between colors in the gener
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/theme-generator.git
+   git clone https://github.com/rlabs-inc/vscode-themes-community.git
    ```
 
 2. Navigate to the project directory:
 
    ```sh
-   cd theme-generator
+   cd vscode-themes-community
    ```
 
 3. Install dependencies:
