@@ -19,14 +19,11 @@ const ActiveColorPicker: React.FC = () => {
   }
 
   return (
-    <div className="mb-4">
+    <div className="flex flex-col gap-2">
       <ColorPicker
         color={currentColor}
         onChange={(newColor) => handleColorChange(activeColor, newColor)}
       />
-      <h3 className="text-lg font-semibold mt-2 text-center first-letter:uppercase">
-        {activeColor}
-      </h3>
     </div>
   )
 }
