@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { ColorScheme, type SavedTheme, SavedThemeSchema } from '../types/colors'
 import { db } from '../drizzle/db'
 import { ThemesTable, UsersTable } from '../drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { generateVSIX } from '@/lib/generator/exportVSIX'
 import { sql } from '@vercel/postgres'
 
@@ -13,6 +13,7 @@ export async function getPublicThemes(): Promise<SavedTheme[]> {
     .select()
     .from(ThemesTable)
     .where(eq(ThemesTable.public, true))
+    .orderBy(desc(ThemesTable.createdAt))
 
   return results.map(parseSavedTheme)
 }
