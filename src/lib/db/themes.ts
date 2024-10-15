@@ -23,6 +23,7 @@ export async function getThemesByUserId(userId: string): Promise<SavedTheme[]> {
     .select()
     .from(ThemesTable)
     .where(eq(ThemesTable.userId, userId))
+    .orderBy(desc(ThemesTable.createdAt))
   return results.map(parseSavedTheme)
 }
 

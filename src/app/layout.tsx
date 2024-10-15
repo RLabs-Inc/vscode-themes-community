@@ -10,7 +10,7 @@ import { auth } from '@clerk/nextjs/server'
 import { Toaster } from '@/components/ui/toaster'
 import { Navigation } from '@/components/Navigation'
 import { ThemeProvider as ThemeProviderContext } from '@/contexts/ThemeContext'
-
+import Footer from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -45,6 +45,7 @@ export default function RootLayout({
             <ThemeProviderContext userId={userId ?? undefined}>
               <Navigation />
               {children}
+              <Footer />
               <Toaster />
               <Analytics />
             </ThemeProviderContext>
