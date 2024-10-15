@@ -6,6 +6,7 @@ import type {
 } from '@/lib/types/colors'
 
 import Color from 'color'
+import { get } from 'http'
 
 export function generateSemanticThemeJSON(
   name: string = 'Generated Color Theme',
@@ -13,6 +14,42 @@ export function generateSemanticThemeJSON(
   syntaxColors: SyntaxColors,
   ansiColors: AnsiColors
 ): { themeJSON: string; themeObject: VSCodeTheme } {
+  const getAC1Foreground = () => {
+    if (Color(colors.BG1).isDark()) {
+      return Color(colors.AC1).isDark() ? colors.FG1 : colors.FG3
+    } else {
+      return Color(colors.AC1).isDark() ? colors.FG3 : colors.FG1
+    }
+  }
+  const getAC2Foreground = () => {
+    if (Color(colors.BG1).isDark()) {
+      return Color(colors.AC2).isDark() ? colors.FG1 : colors.FG3
+    } else {
+      return Color(colors.AC2).isDark() ? colors.FG3 : colors.FG1
+    }
+  }
+  const getINFOForeground = () => {
+    if (Color(colors.BG1).isDark()) {
+      return Color(colors.INFO).isDark() ? colors.FG1 : colors.FG3
+    } else {
+      return Color(colors.INFO).isDark() ? colors.FG3 : colors.FG1
+    }
+  }
+  const getWARNINGForeground = () => {
+    if (Color(colors.BG1).isDark()) {
+      return Color(colors.WARNING).isDark() ? colors.FG1 : colors.FG3
+    } else {
+      return Color(colors.WARNING).isDark() ? colors.FG3 : colors.FG1
+    }
+  }
+  const getERRORForeground = () => {
+    if (Color(colors.BG1).isDark()) {
+      return Color(colors.ERROR).isDark() ? colors.FG1 : colors.FG3
+    } else {
+      return Color(colors.ERROR).isDark() ? colors.FG3 : colors.FG1
+    }
+  }
+
   const theme = {
     name: name,
     type: Color(colors.BG1).isDark()
@@ -100,14 +137,12 @@ export function generateSemanticThemeJSON(
       // # Button Control
       // # A set of colors for button widgets such as Open Folder button in the Explorer of a new window.
       'button.background': colors.AC2 + 'db', // Button background color
-      'button.foreground': Color(colors.AC2).isDark() ? colors.FG1 : colors.FG3, // Button foreground color
+      'button.foreground': getAC2Foreground(), // Button foreground color
       // "button.border": //# Button border color
       // "button.separator": colors.FG2, // Button separator color.
       'button.hoverBackground': colors.AC2, // Button background color when hovering
       'button.secondaryBackground': colors.AC1 + 'db', // Secondary button background color.
-      'button.secondaryForeground': Color(colors.AC1).isDark()
-        ? colors.FG1
-        : colors.FG3, // Secondary button foreground color.
+      'button.secondaryForeground': getAC1Foreground(), // Secondary button foreground color.
       'button.secondaryHoverBackground': colors.AC1, // Secondary button background color when hovering.
       'checkbox.background': colors.BG1, // Background color of checkbox widget.
       'checkbox.foreground': colors.FG1, // Foreground color of checkbox widget.
@@ -147,7 +182,7 @@ export function generateSemanticThemeJSON(
       // "scrollbarSlider.hoverBackground": //# Slider background color when hovering
 
       //# Badge
-      'badge.foreground': Color(colors.AC2).isDark() ? colors.FG1 : colors.FG3, //# Badge foreground color
+      'badge.foreground': getAC2Foreground(), //# Badge foreground color
       'badge.background': colors.AC2, //# Badge background color
 
       //# Progress Bar
@@ -202,9 +237,7 @@ export function generateSemanticThemeJSON(
       'activityBar.activeBackground': colors.lineHighlight, //# Activity Bar indicator background color
       // 'activityBar.activeFocusBorder': colors.lineHighlight, // Activity bar focus border color for the active item.
       'activityBarBadge.background': colors.AC2, // Activity notification badge background color
-      'activityBarBadge.foreground': Color(colors.AC2).isDark()
-        ? colors.FG1
-        : colors.FG3, // Activity notification badge foreground color
+      'activityBarBadge.foreground': getAC2Foreground(), // Activity notification badge foreground color
       'activityBarTop.foreground': colors.FG1, // Active foreground color of the item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
       // "activityBarTop.activeBorder": //# Focus border color for the active item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
       // activityBarTop.inactiveForeground: //# Inactive foreground color of the item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
@@ -422,7 +455,7 @@ export function generateSemanticThemeJSON(
       'editorSuggestWidget.highlightForeground': colors.FG1, // Color of the match highlights in the suggestion widget
       'editorSuggestWidget.selectedBackground': colors.AC2 + '80', // Background color of the selected entry in the suggestion widget
       'editorSuggestWidget.focusHighlightForeground': colors.FG1, // Color of the match highlights in the suggest widget when an item is focused.
-      'editorSuggestWidget.selectedForeground': colors.FG1, // Foreground color of the selected entry in the suggest widget.
+      'editorSuggestWidget.selectedForeground': getAC2Foreground(), // Foreground color of the selected entry in the suggest widget.
       // "editorSuggestWidget.selectedIconForeground": colors.FG1, // Icon foreground color of the selected entry in the suggest widget.
       // editorSuggestWidgetStatus.foreground: # Foreground color of the suggest widget status.
       'editorHoverWidget.background': colors.BG1, // Background color of the editor hover
@@ -568,15 +601,11 @@ export function generateSemanticThemeJSON(
 
       // # Status Bar
       'statusBar.background': colors.AC2, // Standard Status Bar background color
-      'statusBar.foreground': Color(colors.AC2).isLight()
-        ? colors.FG3
-        : colors.FG1, // Status Bar foreground color
+      'statusBar.foreground': getAC2Foreground(), // Status Bar foreground color
       // "statusBar.border": colors.BORDER, // Status Bar border color separating the Status Bar and editor.
       // "statusBar.focusBorder": colors.BORDER, // Status bar border color when focused on keyboard navigation. The status bar is shown in the bottom of the window.
       'statusBar.debuggingBackground': colors.WARNING, // Status Bar background color when a program is being debugged
-      'statusBar.debuggingForeground': Color(colors.WARNING).isLight()
-        ? colors.FG3
-        : colors.FG1, // Status Bar foreground color when a program is being debugged
+      'statusBar.debuggingForeground': getWARNINGForeground(), // Status Bar foreground color when a program is being debugged
       // "statusBar.debuggingBorder": colors.BORDER, // Status Bar border color separating the Status Bar and editor when a program is being debugged.
       'statusBar.noFolderBackground': colors.FG2, // Status Bar foreground color when no folder is opened
       'statusBar.noFolderForeground': colors.FG3, // Status Bar background color when no folder is opened
@@ -584,26 +613,20 @@ export function generateSemanticThemeJSON(
       'statusBarItem.activeBackground': colors.AC2 + 'aa', // Status Bar item background color when clicking
       // "statusBarItem.hoverForeground": colors.BORDER, // Status bar item foreground color when hovering. The status bar is shown in the bottom of the window.
       'statusBarItem.hoverBackground': colors.AC2 + 'aa', // Status Bar item background color when hovering
-      'statusBarItem.prominentForeground': colors.FG3, // Status Bar prominent items foreground color.
+      'statusBarItem.prominentForeground': getAC2Foreground(), // Status Bar prominent items foreground color.
       'statusBarItem.prominentBackground': colors.AC2 + 'aa', // Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance
-      'statusBarItem.prominentHoverForeground': colors.FG3, // Status bar prominent items foreground color when hovering. Prominent items stand out from other status bar entries to indicate importance. The status bar is shown in the bottom of the window.
+      'statusBarItem.prominentHoverForeground': getAC2Foreground(), // Status bar prominent items foreground color when hovering. Prominent items stand out from other status bar entries to indicate importance. The status bar is shown in the bottom of the window.
       'statusBarItem.prominentHoverBackground': colors.AC2 + 'aa', // Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance
-      'statusBarItem.remoteForeground': Color(colors.AC1).isLight()
-        ? colors.FG3
-        : colors.FG1, // Background color for the remote indicator on the status bar
+      'statusBarItem.remoteForeground': getAC1Foreground(), // Background color for the remote indicator on the status bar
       'statusBarItem.remoteBackground': colors.AC1, // Foreground color for the remote indicator on the status bar
       'statusBarItem.remoteHoverBackground': colors.AC1 + 'aa', // Background color for the remote indicator on the status bar when hovering.
       // "statusBarItem.remoteHoverForeground": colors.BORDER, // Foreground color for the remote indicator on the status bar when hovering.
       'statusBarItem.errorBackground': colors.ERROR, // Status bar error items background color. Error items stand out from other status bar entries to indicate error conditions.
-      'statusBarItem.errorForeground': Color(colors.ERROR).isLight()
-        ? colors.FG3
-        : colors.FG1, // Status bar error items foreground color. Error items stand out from other status bar entries to indicate error conditions.
+      'statusBarItem.errorForeground': getERRORForeground(), // Status bar error items foreground color. Error items stand out from other status bar entries to indicate error conditions.
       'statusBarItem.errorHoverBackground': colors.ERROR + 'aa', // # Status bar error items background color when hovering. Error items stand out from other status bar entries to indicate error conditions. The status bar is shown in the bottom of the window.
       // statusBarItem.errorHoverForeground: # Status bar error items foreground color when hovering. Error items stand out from other status bar entries to indicate error conditions. The status bar is shown in the bottom of the window.
       'statusBarItem.warningBackground': colors.WARNING, // Status bar warning items background color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
-      'statusBarItem.warningForeground': Color(colors.WARNING).isLight()
-        ? colors.FG3
-        : colors.FG1, // Status bar warning items foreground color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
+      'statusBarItem.warningForeground': getWARNINGForeground(), // Status bar warning items foreground color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       'statusBarItem.warningHoverBackground': colors.WARNING + 'aa', // Status bar warning items background color when hovering. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       // "statusBarItem.warningHoverForeground": colors.BORDER, // Status bar warning items foreground color when hovering. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       // statusBarItem.compactHoverBackground: # Status bar item background color when hovering an item that contains two hovers. The status bar is shown in the bottom of the window.
@@ -621,9 +644,7 @@ export function generateSemanticThemeJSON(
       // "titleBar.border": colors.BORDER, // Title bar border color.
 
       // Extensions
-      'extensionButton.prominentForeground': Color(colors.AC2).isDark()
-        ? colors.FG1
-        : colors.FG3, // Extension view button foreground color (for example Install button)
+      'extensionButton.prominentForeground': getAC2Foreground(), // Extension view button foreground color (for example Install button)
       'extensionButton.prominentBackground': colors.AC2 + 'aa', // Extension view button background color
       'extensionButton.prominentHoverBackground': colors.AC2, // Extension view button background hover color
       // extensionButton.background: # Button background color for extension actions.
@@ -701,9 +722,7 @@ export function generateSemanticThemeJSON(
 
       // # Debug
       'debugToolBar.background': colors.INFO, // # Debug toolbar background color
-      'debugToolBar.foreground': Color(colors.INFO).isLight()
-        ? colors.FG3
-        : colors.FG1, // # Debug toolbar foreground color
+      'debugToolBar.foreground': getINFOForeground(), // # Debug toolbar foreground color
       // debugToolBar.border: # Debug toolbar border color.
       // editor.stackFrameHighlightBackground: # Background color of the top stack frame highlight in the editor.
       // editor.focusedStackFrameHighlightBackground: # Background color of the focused stack frame highlight in the editor.
