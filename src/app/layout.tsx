@@ -6,7 +6,6 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { ClerkProvider } from '@clerk/nextjs'
 import { auth } from '@clerk/nextjs/server'
-import { dark } from '@clerk/themes'
 
 import { Toaster } from '@/components/ui/toaster'
 import { Navigation } from '@/components/Navigation'
@@ -30,7 +29,9 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        baseTheme: dark,
+        variables: {
+          colorPrimary: 'hsl(0 0% 98%)',
+        },
       }}
     >
       <html lang="en">
