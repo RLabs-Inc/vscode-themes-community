@@ -87,6 +87,7 @@ const ThemeControls: React.FC = () => {
     // Add small random variations to the current values
     const hueVariation = Math.floor(Math.random() * 30) - 15 // -15 to +15
     const saturationVariation = Math.floor(Math.random() * 20) - 10 // -10 to +10
+    const syntaxSaturationVariation = Math.floor(Math.random() * 20) - 10 // -10 to +10
 
     const newBaseHue = (baseHue + hueVariation + 360) % 360
     const newUiSaturation = Math.max(
@@ -95,7 +96,7 @@ const ThemeControls: React.FC = () => {
     )
     const newSyntaxSaturation = Math.max(
       0,
-      Math.min(100, syntaxSaturation + saturationVariation)
+      Math.min(100, syntaxSaturation + syntaxSaturationVariation)
     )
 
     setBaseHue(newBaseHue)
